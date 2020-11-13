@@ -3,7 +3,7 @@ import Sketch from 'react-p5'
 
 import fontSource from '../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
-export default (props) => {
+function SplashSketch(props) {
 	let particleFont
 	let systemWidth = 500
 	let systemHeight = 200
@@ -136,3 +136,5 @@ export default (props) => {
 
 	return <Sketch preload={preload} setup={setup} draw={draw} />
 }
+
+export default SplashSketch
