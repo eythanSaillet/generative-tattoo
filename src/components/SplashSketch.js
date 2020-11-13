@@ -8,67 +8,55 @@ export default (props) => {
 	let systemWidth = 500
 	let systemHeight = 200
 	let particles = []
-	let particleSize = 3
-	let backgroundColor = 240
+	let particleSize = 2
+	let backgroundColor = 255
+	let mouse
 
 	function preload(p5) {
 		particleFont = p5.loadFont(fontSource)
 	}
 
 	const setup = (p5, canvasParentRef) => {
-		p5.createCanvas(1080, 720).parent(canvasParentRef)
+		p5.createCanvas(1000, 500).parent(canvasParentRef)
 		p5.background(backgroundColor)
+		// p5.frameRate(30)
 
+		// Draw the text we are going to use to create the particles
 		p5.textSize(100)
 		p5.textFont(particleFont)
 		p5.textAlign(p5.CENTER, p5.CENTER)
 		p5.noStroke()
 		p5.text('NOISE', p5.width / 2, p5.height / 2)
 
+		mouse = p5.createVector()
+
 		createParticles(p5)
 	}
 
 	const draw = (p5) => {
 		p5.background(backgroundColor)
+		updateMouseVector(p5)
 		updateParticles(p5)
 	}
 
-	function mouseMoved(p5) {
-		for (const _particle of particles) {
-			if (p5.dist(p5.mouseX, p5.mouseY, _particle.pos.x, _particle.pos.y) < 100 && _particle.type === 'free') {
-				let acc = p5.createVector(p5.mouseX, p5.mouseY).sub(_particle.pos)
-				_particle.acc = acc.setMag(1).mult(-1)
-			}
-		}
+	function updateMouseVector(p5) {
+		mouse.x = p5.mouseX
+		mouse.y = p5.mouseY
 	}
 
 	function createParticles(p5) {
-		let upperLeft = p5.createVector(p5.width / 2 - systemWidth / 2, p5.height / 2 - systemHeight / 2)
-		let upperRight = p5.createVector(p5.width / 2 + systemWidth / 2, p5.height / 2 - systemHeight / 2)
-		let downLeft = p5.createVector(p5.width / 2 - systemWidth / 2, p5.height / 2 + systemHeight / 2)
-		let downRight = p5.createVector(p5.width / 2 + systemWidth / 2, p5.height / 2 + systemHeight / 2)
-
-		p5.stroke('black')
-		p5.strokeWeight(particleSize)
-		p5.point(upperLeft.x, upperLeft.y)
-		p5.point(upperRight.x, upperRight.y)
-		p5.point(downLeft.x, downLeft.y)
-		p5.point(downRight.x, downRight.y)
-
-		let step = 6
+		// Every *step pixels, create a particle. Its type depends on the pixel color.
+		let step = 5
 		for (let i = p5.width / 2 - systemWidth / 2; i <= p5.width / 2 + systemWidth / 2; i += step) {
 			for (let j = p5.height / 2 - systemHeight / 2; j <= p5.height / 2 + systemHeight / 2; j += step) {
 				let color = p5.get(i, j)
 				let type
 				if (color[0] === backgroundColor) {
-					p5.stroke('blue') //
 					type = 'free'
 				} else {
-					p5.stroke('red') //
 					type = 'fixed'
 				}
 				particles.push(new Particle(p5, p5.createVector(i, j), type))
-				p5.point(i, j) //
 			}
 		}
 	}
@@ -77,24 +65,68 @@ export default (props) => {
 		p5.strokeWeight(particleSize)
 		p5.stroke('black')
 		for (const _particle of particles) {
-			_particle.applyForce()
+			if (_particle.type === 'free') {
+				_particle.applyForce(p5)
+			}
 			_particle.draw(p5)
 		}
 	}
 
 	class Particle {
 		constructor(p5, pos, type) {
+			this.origin = p5.createVector(pos.x, pos.y)
 			this.pos = pos
 			this.acc = p5.createVector()
 			this.vel = p5.createVector()
 
 			this.type = type
+
+			this.maxSpeed = 10
+			this.maxForce = 0.5
+			this.brakeRadius = 100
+			this.mouseForceRadius = 75
+			this.mouseForce = 0.04
 		}
 
-		applyForce() {
+		originAttraction(p5) {
+			// Define target
+			let target = p5.createVector(this.origin.x, this.origin.y).sub(this.pos)
+
+			// Reduce speed when the particle come near its origin
+			let dist = target.mag()
+			let factor = this.maxSpeed
+			if (dist < this.brakeRadius) {
+				factor = p5.map(dist, 0, this.brakeRadius, 0, this.maxSpeed)
+			}
+			target.setMag(factor)
+
+			// Return force
+			let steering = p5.createVector(target.x, target.y).sub(this.vel)
+			steering.limit(this.maxForce)
+			return steering
+		}
+
+		applyForce(p5) {
+			this.acc.add(this.originAttraction(p5))
+			this.acc.add(this.mouseRepulsion(p5))
+
 			this.vel.add(this.acc)
-			this.vel.limit(5)
+			this.acc.mult(0)
 			this.pos.add(this.vel)
+		}
+
+		mouseRepulsion(p5) {
+			// Define target
+			let target = p5.createVector(mouse.x, mouse.y).sub(this.pos)
+
+			// Apply the force within a certain distance
+			let dist = target.mag()
+			if (dist < this.mouseForceRadius) {
+				let steering = p5.createVector(target.x, target.y).sub(this.vel)
+				steering.mult(-this.mouseForce)
+				return steering
+			}
+			return p5.createVector(0, 0)
 		}
 
 		draw(p5) {
@@ -102,5 +134,5 @@ export default (props) => {
 		}
 	}
 
-	return <Sketch preload={preload} setup={setup} draw={draw} mouseMoved={mouseMoved} />
+	return <Sketch preload={preload} setup={setup} draw={draw} />
 }
