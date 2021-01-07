@@ -1,15 +1,27 @@
+:root {
+	--white: white;
+	--black: black;
+}
+
 * {
 	margin: 0;
 	padding: 0;
 }
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	font-family: 'Made Outer Sans Medium';
 }
 
-code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+@font-face {
+	font-family: 'Made Outer Sans Medium';
+	src: url('assets/fonts/made-outer-sans/made-outer-sans-medium.otf');
+}
+@font-face {
+	font-family: 'Made Outer Sans Regular';
+	src: url('assets/fonts/made-outer-sans/made-outer-sans-regular.otf');
+}
+
+@font-face {
+	font-family: 'Made Outer Sans Light';
+	src: url('assets/fonts/made-outer-sans/made-outer-sans-light.otf');
 }

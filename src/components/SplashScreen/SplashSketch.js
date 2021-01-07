@@ -1,7 +1,7 @@
 import React from 'react'
 import Sketch from 'react-p5'
 
-import fontSource from '../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
+import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
 function SplashSketch(props) {
 	let particleFont
@@ -9,7 +9,7 @@ function SplashSketch(props) {
 	let systemHeight = 150
 	let particles = []
 	let particleSize = 2
-	let backgroundColor = 255
+	let backgroundColor = 0
 	let mouse
 
 	function preload(p5) {
@@ -109,6 +109,8 @@ function SplashSketch(props) {
 			this.brakeRadius = 100
 			this.mouseForceRadius = 85
 			this.mouseForce = 0.04
+
+			this.color = 255
 		}
 
 		originAttraction(p5) {
@@ -196,6 +198,7 @@ function SplashSketch(props) {
 		}
 
 		draw(p5) {
+			p5.stroke(this.color)
 			p5.point(this.pos.x, this.pos.y)
 		}
 	}
