@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import gsap, { Power2 } from 'gsap'
 
 const View = styled.div`
 	width: 100vw;
@@ -19,13 +20,13 @@ const View = styled.div`
 		flex-direction: column;
 
 		/* MENU LINES */
-		.menuLines {
+		.navLines {
 			position: absolute;
 			top: 0;
 			left: 0;
 			display: flex;
 		}
-		.upMenuLines {
+		.topNavLines {
 			width: 100%;
 			height: var(--menuSize);
 			flex-direction: column;
@@ -34,9 +35,11 @@ const View = styled.div`
 				width: 100%;
 				height: var(--menuLineSize);
 				background: var(--white);
+				transform: scaleX(0);
+				transform-origin: left;
 			}
 		}
-		.leftMenuLines {
+		.leftNavLines {
 			width: var(--menuSize);
 			height: 100%;
 			justify-content: space-between;
@@ -44,12 +47,15 @@ const View = styled.div`
 				width: var(--menuLineSize);
 				height: 100%;
 				background: var(--white);
+				transform: scaleY(0);
+				transform-origin: top;
 			}
 		}
+
+		/* MENU & MAIN */
 		.upperNav {
 			width: 100%;
 			height: var(--menuSize);
-			background: grey;
 		}
 		.lowerContainer {
 			width: 100;
@@ -58,28 +64,38 @@ const View = styled.div`
 			.leftNav {
 				width: var(--menuSize);
 				height: 100%;
-				background: darkgrey;
 			}
 			.main {
 				width: calc(100% - var(--menuSize));
 				height: 100%;
-				background: gainsboro;
 			}
 		}
 	}
 `
 
 function Navigation() {
+	let topNavLine1 = useRef(null)
+	let topNavLine2 = useRef(null)
+	let leftNavLine1 = useRef(null)
+	let leftNavLine2 = useRef(null)
+
+	useEffect(() => {
+		gsap.to(topNavLine1.current, { duration: 1, scaleX: 1, ease: Power2.easeInOut })
+		gsap.to(topNavLine2.current, { duration: 1.2, scaleX: 1, ease: Power2.easeInOut })
+		gsap.to(leftNavLine1.current, { duration: 1, scaleY: 1, ease: Power2.easeInOut })
+		gsap.to(leftNavLine2.current, { duration: 1.2, scaleY: 1, ease: Power2.easeInOut })
+	}, [])
+
 	return (
 		<View>
 			<div className="container">
-				<div className="menuLines upMenuLines">
-					<div className="line"></div>
-					<div className="line"></div>
+				<div className="navLines topNavLines">
+					<div className="line" ref={topNavLine1}></div>
+					<div className="line" ref={topNavLine2}></div>
 				</div>
-				<div className="menuLines leftMenuLines">
-					<div className="line"></div>
-					<div className="line"></div>
+				<div className="navLines leftNavLines">
+					<div className="line" ref={leftNavLine1}></div>
+					<div className="line" ref={leftNavLine2}></div>
 				</div>
 				<div className="upperNav"></div>
 				<div className="lowerContainer">

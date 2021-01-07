@@ -1,4 +1,4 @@
-import SplashScreen from './components/SplashScreen/index'
+// import SplashScreen from './components/SplashScreen/index'
 import Navigation from './components/Navigation'
 
 function App() {
