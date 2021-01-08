@@ -14,14 +14,23 @@ const Text = styled.div`
 
 	/* STYLES */
 	.title {
-		height: 33px;
+		height: 32px;
 		padding: 0 5px;
 		font-size: 2.5em;
-		line-height: 33px;
+		line-height: 32px;
 	}
+	.navLink {
+		height: 11px;
+		color: var(--grey);
+		font-size: 0.8em;
+		line-height: 11px;
+		padding: 0 1px;
+		cursor: pointer;
+	}
+	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};
 `
 
-export default function AnimatedText({ text, type, delay }) {
+export default function AnimatedText({ text, type, stagger, delay }) {
 	let spans = []
 	let spansRefs = useRef([])
 	for (let i = 0; i < text.length; i++) {
@@ -36,11 +45,11 @@ export default function AnimatedText({ text, type, delay }) {
 			gsap.to(spansRefs.current, {
 				duration: 0.7,
 				y: 0,
-				stagger: 0.03,
+				stagger: stagger,
 				ease: Power3.easeOut,
 			})
 		}, delay)
 	}, [delay])
 
-	return <Text>{spans}</Text>
+	return <Text type={type}>{spans}</Text>
 }

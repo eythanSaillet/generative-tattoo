@@ -90,6 +90,17 @@ const View = styled.div`
 			.leftNav {
 				width: var(--menuSize);
 				height: 100%;
+				display: flex;
+				align-items: flex-end;
+				.linksContainer {
+					width: 100%;
+					height: 180px;
+					margin-bottom: 90px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					align-items: center;
+				}
 			}
 			.main {
 				width: calc(100% - var(--menuSize));
@@ -128,13 +139,18 @@ export default function Navigation() {
 				<div className="upperNav">
 					<div className="icon"></div>
 					<div className="titleContainer">
-						<AnimatedText text="SELECT YOUR DESIGN" type="title" delay={600}></AnimatedText>
+						<AnimatedText text="SELECT YOUR DESIGN" type="title" stagger={0.03} delay={600}></AnimatedText>
 					</div>
 					<div className="line" ref={topNavLine3}></div>
 					<div className="selectionButtonContainer"></div>
 				</div>
 				<div className="lowerContainer">
-					<div className="leftNav"></div>
+					<div className="leftNav">
+						<div className="linksContainer">
+							<AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500}></AnimatedText>
+							<AnimatedText text="INSTAGRAM" type="navLink" stagger={-0.05} delay={600}></AnimatedText>
+						</div>
+					</div>
 					<div className="main"></div>
 				</div>
 			</div>
