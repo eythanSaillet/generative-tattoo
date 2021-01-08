@@ -21,26 +21,26 @@ const Text = styled.div`
 	}
 `
 
-export default function AnimatedText({ text, style, triggerDelay }) {
-	let test = []
-	let spans = useRef([])
+export default function AnimatedText({ text, style, delay }) {
+	let spans = []
+	let spansRefs = useRef([])
 	for (let i = 0; i < text.length; i++) {
-		test.push(
-			<span className={style} key={i} ref={(element) => spans.current.push(element)}>
+		spans.push(
+			<span className={style} key={i} ref={(element) => spansRefs.current.push(element)}>
 				{text[i]}
 			</span>
 		)
 	}
 	useEffect(() => {
 		setTimeout(() => {
-			gsap.to(spans.current, {
+			gsap.to(spansRefs.current, {
 				duration: 0.7,
 				y: 0,
 				stagger: 0.03,
 				ease: Power3.easeOut,
 			})
-		}, triggerDelay)
-	}, [])
+		}, delay)
+	}, [delay])
 
-	return <Text>{test}</Text>
+	return <Text>{spans}</Text>
 }
