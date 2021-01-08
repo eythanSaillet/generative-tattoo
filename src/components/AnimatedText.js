@@ -21,12 +21,12 @@ const Text = styled.div`
 	}
 `
 
-export default function AnimatedText({ text, style, delay }) {
+export default function AnimatedText({ text, type, delay }) {
 	let spans = []
 	let spansRefs = useRef([])
 	for (let i = 0; i < text.length; i++) {
 		spans.push(
-			<span className={style} key={i} ref={(element) => spansRefs.current.push(element)}>
+			<span className={type} key={i} ref={(element) => spansRefs.current.push(element)}>
 				{text[i]}
 			</span>
 		)
