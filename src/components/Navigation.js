@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 
+import AnimatedText from './AnimatedText'
+
 const View = styled.div`
 	width: 100vw;
 	height: 100vh;
@@ -9,8 +11,8 @@ const View = styled.div`
 	justify-content: flex-end;
 	align-items: flex-end;
 	background: var(--black);
-	--containerMargin: 1.7vw;
-	--menuSize: 5vw;
+	--containerMargin: 35px;
+	--menuSize: 100px;
 	--menuLineSize: 1px;
 	.container {
 		position: relative;
@@ -19,12 +21,13 @@ const View = styled.div`
 		display: flex;
 		flex-direction: column;
 
-		/* MENU LINES */
+		/* NAV LINES */
 		.navLines {
 			position: absolute;
 			top: 0;
 			left: 0;
 			display: flex;
+			pointer-events: none;
 		}
 		.topNavLines {
 			width: 100%;
@@ -52,10 +55,33 @@ const View = styled.div`
 			}
 		}
 
-		/* MENU & MAIN */
+		/* NAV & MAIN */
 		.upperNav {
 			width: 100%;
 			height: var(--menuSize);
+			display: flex;
+			.icon {
+				width: var(--menuSize);
+				height: 100%;
+			}
+			.titleContainer {
+				width: calc(80% - var(--menuSize));
+				height: 100%;
+				display: flex;
+				align-items: center;
+				padding-left: 35px;
+			}
+			.line {
+				width: var(--menuLineSize);
+				height: 100%;
+				background: var(--white);
+				transform: scaleY(0);
+				transform-origin: top;
+			}
+			.selectionButtonContainer {
+				width: calc(20% - var(--menuLineSize));
+				height: 100%;
+			}
 		}
 		.lowerContainer {
 			width: 100;
@@ -73,17 +99,19 @@ const View = styled.div`
 	}
 `
 
-function Navigation() {
+export default function Navigation() {
 	let topNavLine1 = useRef(null)
 	let topNavLine2 = useRef(null)
+	let topNavLine3 = useRef(null)
 	let leftNavLine1 = useRef(null)
 	let leftNavLine2 = useRef(null)
 
 	useEffect(() => {
-		gsap.to(topNavLine1.current, { duration: 1, scaleX: 1, ease: Power2.easeInOut })
-		gsap.to(topNavLine2.current, { duration: 1.2, scaleX: 1, ease: Power2.easeInOut })
-		gsap.to(leftNavLine1.current, { duration: 1, scaleY: 1, ease: Power2.easeInOut })
-		gsap.to(leftNavLine2.current, { duration: 1.2, scaleY: 1, ease: Power2.easeInOut })
+		gsap.to(topNavLine1.current, { duration: 1.3, scaleX: 1, ease: Power2.easeInOut })
+		gsap.to(topNavLine2.current, { duration: 1.8, scaleX: 1, ease: Power2.easeInOut })
+		gsap.to(leftNavLine1.current, { duration: 1.1, scaleY: 1, ease: Power2.easeInOut })
+		gsap.to(leftNavLine2.current, { duration: 1.6, scaleY: 1, ease: Power2.easeInOut })
+		gsap.to(topNavLine3.current, { duration: 0.3, delay: 0.75, scaleY: 1, ease: Power2.easeInOut })
 	}, [])
 
 	return (
@@ -97,7 +125,14 @@ function Navigation() {
 					<div className="line" ref={leftNavLine1}></div>
 					<div className="line" ref={leftNavLine2}></div>
 				</div>
-				<div className="upperNav"></div>
+				<div className="upperNav">
+					<div className="icon"></div>
+					<div className="titleContainer">
+						<AnimatedText text="SELECT YOUR DESIGN" style="title" delay={600}></AnimatedText>
+					</div>
+					<div className="line" ref={topNavLine3}></div>
+					<div className="selectionButtonContainer"></div>
+				</div>
 				<div className="lowerContainer">
 					<div className="leftNav"></div>
 					<div className="main"></div>
@@ -106,5 +141,3 @@ function Navigation() {
 		</View>
 	)
 }
-
-export default Navigation

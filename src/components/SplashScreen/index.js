@@ -2,7 +2,7 @@ import React from 'react'
 import SplashSketch from './SplashSketch'
 import SplashTitle from './SplashTitle'
 
-function SplashScreen() {
+export default function SplashScreen() {
 	return (
 		<div>
 			<SplashSketch></SplashSketch>
@@ -10,5 +10,3 @@ function SplashScreen() {
 		</div>
 	)
 }
-
-export default SplashScreen

@@ -9,7 +9,8 @@
 }
 
 body {
-	font-family: 'Made Outer Sans Medium';
+	font-family: 'Made Outer Sans Regular';
+	color: var(--white);
 }
 
 @font-face {

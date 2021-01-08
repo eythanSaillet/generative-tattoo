@@ -12,8 +12,6 @@ const Title = styled.h1`
 	letter-spacing: 70px;
 `
 
-function SplashTitle() {
+export default function SplashTitle() {
 	return <Title>GENERATIVE</Title>
 }
-
-export default SplashTitle
