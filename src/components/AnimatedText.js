@@ -49,7 +49,7 @@ export default function AnimatedText({ text, type, stagger, delay }) {
 				ease: Power3.easeOut,
 			})
 		}, delay)
-	}, [delay])
+	}, [stagger, delay])
 
 	return <Text type={type}>{spans}</Text>
 }
