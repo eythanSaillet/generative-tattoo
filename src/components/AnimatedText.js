@@ -21,7 +21,7 @@ const Text = styled.div`
 	}
 `
 
-export default function AnimatedText({ text, style, delay }) {
+export default function AnimatedText({ text, style, triggerDelay }) {
 	let test = []
 	let spans = useRef([])
 	for (let i = 0; i < text.length; i++) {
@@ -39,7 +39,7 @@ export default function AnimatedText({ text, style, delay }) {
 				stagger: 0.03,
 				ease: Power3.easeOut,
 			})
-		}, delay)
+		}, triggerDelay)
 	}, [])
 
 	return <Text>{test}</Text>

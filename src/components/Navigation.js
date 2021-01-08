@@ -128,7 +128,7 @@ export default function Navigation() {
 				<div className="upperNav">
 					<div className="icon"></div>
 					<div className="titleContainer">
-						<AnimatedText text="SELECT YOUR DESIGN" style="title" delay={600}></AnimatedText>
+						<AnimatedText text="SELECT YOUR DESIGN" style="title" triggerDelay={600}></AnimatedText>
 					</div>
 					<div className="line" ref={topNavLine3}></div>
 					<div className="selectionButtonContainer"></div>
