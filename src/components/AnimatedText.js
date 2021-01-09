@@ -38,7 +38,7 @@ const Text = styled.div`
 export default function AnimatedText({ text, type, stagger, delay, hover }) {
 	let spans = []
 	let spansRefs = useRef([])
-	let isAnimated = true
+	let isAnimated = useRef(true)
 
 	for (let i = 0; i < text.length; i++) {
 		spans.push(
@@ -55,7 +55,7 @@ export default function AnimatedText({ text, type, stagger, delay, hover }) {
 				stagger: stagger,
 				ease: Power3.easeOut,
 				onComplete: () => {
-					isAnimated = false
+					isAnimated.current = false
 				},
 			})
 		}, delay)
@@ -63,7 +63,7 @@ export default function AnimatedText({ text, type, stagger, delay, hover }) {
 
 	// Hover animation
 	let hoverAnim = () => {
-		isAnimated = true
+		isAnimated.current = true
 		let delay = 0
 		for (let i = 0; i < spansRefs.current.length; i++) {
 			gsap.to(spansRefs.current[i], {
@@ -82,7 +82,7 @@ export default function AnimatedText({ text, type, stagger, delay, hover }) {
 								ease: Power2.easeOut,
 							})
 							if (i === spansRefs.current.length - 1) {
-								isAnimated = false
+								isAnimated.current = false
 							}
 						},
 					})
@@ -96,7 +96,7 @@ export default function AnimatedText({ text, type, stagger, delay, hover }) {
 		<Text
 			type={type}
 			onMouseEnter={() => {
-				if (!isAnimated && hover) {
+				if (!isAnimated.current && hover) {
 					hoverAnim()
 				}
 			}}
