@@ -94,7 +94,7 @@ const View = styled.div`
 				align-items: flex-end;
 				.linksContainer {
 					width: 100%;
-					height: 180px;
+					height: 175px;
 					margin-bottom: 90px;
 					display: flex;
 					flex-direction: column;
@@ -139,7 +139,7 @@ export default function Navigation() {
 				<div className="upperNav">
 					<div className="icon"></div>
 					<div className="titleContainer">
-						<AnimatedText text="SELECT YOUR DESIGN" type="title" stagger={0.03} delay={600}></AnimatedText>
+						<AnimatedText text="SELECT YOUR DESIGN" type="title" stagger={0.03} delay={600} hover={false}></AnimatedText>
 					</div>
 					<div className="line" ref={topNavLine3}></div>
 					<div className="selectionButtonContainer"></div>
@@ -147,8 +147,8 @@ export default function Navigation() {
 				<div className="lowerContainer">
 					<div className="leftNav">
 						<div className="linksContainer">
-							<AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500}></AnimatedText>
-							<AnimatedText text="INSTAGRAM" type="navLink" stagger={-0.05} delay={600}></AnimatedText>
+							<AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500} hover={true}></AnimatedText>
+							<AnimatedText text="INSTAGRAM" type="navLink" stagger={-0.05} delay={600} hover={true}></AnimatedText>
 						</div>
 					</div>
 					<div className="main"></div>

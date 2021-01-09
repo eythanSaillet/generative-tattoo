@@ -1,38 +1,45 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import gsap, { Power3 } from 'gsap'
+import gsap, { Power3, Power2 } from 'gsap'
 
 const Text = styled.div`
-	overflow: hidden;
 	display: flex;
 	align-items: center;
-	span {
-		display: inline-block;
-		white-space: pre;
-		transform: translateY(100%);
-	}
+	padding: ${(props) => (props.type === 'navLink' ? '12px' : '0')};
+	cursor: ${(props) => (props.type === 'navLink' ? 'pointer' : 'initial')};
+	.textContainer {
+		display: flex;
+		overflow: hidden;
+		span {
+			display: inline-block;
+			white-space: pre;
+			transform: translateY(105%);
+			pointer-events: none;
+		}
 
-	/* STYLES */
-	.title {
-		height: 32px;
-		padding: 0 5px;
-		font-size: 2.5em;
-		line-height: 32px;
-	}
-	.navLink {
-		height: 11px;
-		color: var(--grey);
-		font-size: 0.8em;
-		line-height: 11px;
-		padding: 0 1px;
-		cursor: pointer;
+		/* TYPES */
+		.title {
+			height: 32px;
+			padding: 0 5px;
+			font-size: 2.5em;
+			line-height: 32px;
+		}
+		.navLink {
+			height: 11px;
+			color: var(--grey);
+			font-size: 0.8em;
+			line-height: 11px;
+			padding: 0 1px;
+		}
 	}
 	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};
 `
 
-export default function AnimatedText({ text, type, stagger, delay }) {
+export default function AnimatedText({ text, type, stagger, delay, hover }) {
 	let spans = []
 	let spansRefs = useRef([])
+	let isAnimated = true
+
 	for (let i = 0; i < text.length; i++) {
 		spans.push(
 			<span className={type} key={i} ref={(element) => spansRefs.current.push(element)}>
@@ -44,12 +51,57 @@ export default function AnimatedText({ text, type, stagger, delay }) {
 		setTimeout(() => {
 			gsap.to(spansRefs.current, {
 				duration: 0.7,
-				y: 0,
+				y: '0%',
 				stagger: stagger,
 				ease: Power3.easeOut,
+				onComplete: () => {
+					isAnimated = false
+				},
 			})
 		}, delay)
-	}, [stagger, delay])
+	}, [stagger, delay, isAnimated])
 
-	return <Text type={type}>{spans}</Text>
+	// Hover animation
+	let hoverAnim = () => {
+		isAnimated = true
+		let delay = 0
+		for (let i = 0; i < spansRefs.current.length; i++) {
+			gsap.to(spansRefs.current[i], {
+				duration: 0.3,
+				delay: delay,
+				y: '-105%',
+				ease: Power2.easeIn,
+				onComplete: () => {
+					gsap.to(spansRefs.current[i], {
+						duration: 0,
+						y: '105%',
+						onComplete: () => {
+							gsap.to(spansRefs.current[i], {
+								duration: 0.3,
+								y: '0%',
+								ease: Power2.easeOut,
+							})
+							if (i === spansRefs.current.length - 1) {
+								isAnimated = false
+							}
+						},
+					})
+				},
+			})
+			delay += 0.04
+		}
+	}
+
+	return (
+		<Text
+			type={type}
+			onMouseEnter={() => {
+				if (!isAnimated && hover) {
+					hoverAnim()
+				}
+			}}
+		>
+			<div className="textContainer">{spans}</div>
+		</Text>
+	)
 }
