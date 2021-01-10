@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 
 import AnimatedText from './AnimatedText'
+import AnimatedLogoSource from '../assets/animatedLogo.webm'
 
 const View = styled.div`
 	width: 100vw;
@@ -60,9 +61,22 @@ const View = styled.div`
 			width: 100%;
 			height: var(--menuSize);
 			display: flex;
-			.icon {
+			.logoContainer {
 				width: var(--menuSize);
 				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				cursor: pointer;
+				.logo {
+					width: 60%;
+					height: 60%;
+					transform: rotate(45deg);
+					video {
+						width: 100%;
+						height: 100%;
+					}
+				}
 			}
 			.titleContainer {
 				width: calc(80% - var(--menuSize));
@@ -111,13 +125,19 @@ const View = styled.div`
 `
 
 export default function Navigation() {
+	// Nav lines refs
 	let topNavLine1 = useRef(null)
 	let topNavLine2 = useRef(null)
 	let topNavLine3 = useRef(null)
 	let leftNavLine1 = useRef(null)
 	let leftNavLine2 = useRef(null)
+	// Logo refs
+	let animatedLogo = useRef(null)
+
+	let logoPhase = 0
 
 	useEffect(() => {
+		// Draw nav lines
 		gsap.to(topNavLine1.current, { duration: 1.3, scaleX: 1, ease: Power2.easeInOut })
 		gsap.to(topNavLine2.current, { duration: 1.8, scaleX: 1, ease: Power2.easeInOut })
 		gsap.to(leftNavLine1.current, { duration: 1.1, scaleY: 1, ease: Power2.easeInOut })
@@ -137,7 +157,29 @@ export default function Navigation() {
 					<div className="line" ref={leftNavLine2}></div>
 				</div>
 				<div className="upperNav">
-					<div className="icon"></div>
+					<div
+						className="logoContainer"
+						onMouseEnter={() => {
+							animatedLogo.current.play()
+						}}
+					>
+						<div className="logo">
+							<video
+								src={AnimatedLogoSource}
+								ref={animatedLogo}
+								onTimeUpdate={() => {
+									if (animatedLogo.current.currentTime >= 0.5 && logoPhase === 0) {
+										logoPhase = 1
+										animatedLogo.current.pause()
+									}
+									if (animatedLogo.current.currentTime === 1) {
+										logoPhase = 0
+										animatedLogo.current.currentTime = 0
+									}
+								}}
+							></video>
+						</div>
+					</div>
 					<div className="titleContainer">
 						<AnimatedText text="SELECT YOUR DESIGN" type="title" stagger={0.03} delay={600} hover={false}></AnimatedText>
 					</div>
