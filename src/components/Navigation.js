@@ -61,6 +61,7 @@ const View = styled.div`
 			width: 100%;
 			height: var(--menuSize);
 			display: flex;
+			user-select: none;
 			.logoContainer {
 				width: var(--menuSize);
 				height: 100%;
@@ -79,7 +80,7 @@ const View = styled.div`
 				}
 			}
 			.titleContainer {
-				width: calc(80% - var(--menuSize));
+				width: calc(80% - var(--menuSize) - 35px);
 				height: 100%;
 				display: flex;
 				align-items: center;
@@ -106,6 +107,7 @@ const View = styled.div`
 				height: 100%;
 				display: flex;
 				align-items: flex-end;
+				user-select: none;
 				.linksContainer {
 					width: 100%;
 					height: 175px;
@@ -181,7 +183,7 @@ export default function Navigation() {
 						</div>
 					</div>
 					<div className="titleContainer">
-						<AnimatedText text="SELECT YOUR DESIGN" type="title" stagger={0.03} delay={600} hover={false}></AnimatedText>
+						<AnimatedText text="CHOOSE YOUR DESIGN" type="title" stagger={0.03} delay={600} hover={false}></AnimatedText>
 					</div>
 					<div className="line" ref={topNavLine3}></div>
 					<div className="selectionButtonContainer"></div>
