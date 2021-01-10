@@ -136,8 +136,6 @@ export default function Navigation() {
 	// Logo refs
 	let animatedLogo = useRef(null)
 
-	let logoPhase = 0
-
 	useEffect(() => {
 		// Draw nav lines
 		gsap.to(topNavLine1.current, { duration: 1.3, scaleX: 1, ease: Power2.easeInOut })
@@ -170,12 +168,7 @@ export default function Navigation() {
 								src={AnimatedLogoSource}
 								ref={animatedLogo}
 								onTimeUpdate={() => {
-									if (animatedLogo.current.currentTime >= 0.5 && logoPhase === 0) {
-										logoPhase = 1
-										animatedLogo.current.pause()
-									}
-									if (animatedLogo.current.currentTime === 1) {
-										logoPhase = 0
+									if (animatedLogo.current.currentTime === animatedLogo.current.duration) {
 										animatedLogo.current.currentTime = 0
 									}
 								}}
