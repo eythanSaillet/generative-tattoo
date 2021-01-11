@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 
 import Main from './Main'
-import AnimatedText from './AnimatedText'
+import AnimatedText from './utils/AnimatedText'
 import AnimatedLogoSource from '../assets/animatedLogo.webm'
 
 const View = styled.div`
@@ -13,9 +13,6 @@ const View = styled.div`
 	justify-content: flex-end;
 	align-items: flex-end;
 	background: var(--black);
-	--containerMargin: 35px;
-	--menuSize: 100px;
-	--menuLineSize: 1px;
 	.container {
 		position: relative;
 		width: calc(100% - var(--containerMargin));

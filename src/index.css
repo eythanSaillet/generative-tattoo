@@ -2,6 +2,9 @@
 	--white: white;
 	--black: black;
 	--grey: lightgrey;
+	--containerMargin: 35px;
+	--menuLineSize: 1px;
+	--menuSize: 100px;
 }
 
 * {
