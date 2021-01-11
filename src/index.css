@@ -26,8 +26,11 @@ body {
 	font-family: 'Made Outer Sans Regular';
 	src: url('assets/fonts/made-outer-sans/made-outer-sans-regular.otf');
 }
-
 @font-face {
 	font-family: 'Made Outer Sans Light';
 	src: url('assets/fonts/made-outer-sans/made-outer-sans-light.otf');
+}
+@font-face {
+	font-family: 'Made Outer Sans Thin';
+	src: url('assets/fonts/made-outer-sans/made-outer-sans-thin.otf');
 }

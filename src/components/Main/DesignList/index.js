@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 import HorizontalScroll from 'react-scroll-horizontal'
 
+import config from '../../../assets/config.json'
 import DesignItem from './DesignItem/index'
 
 const Container = styled.div`
@@ -15,20 +16,17 @@ const Container = styled.div`
 `
 
 export default function DesignList() {
-	let test = useRef(null)
+	let items = []
+	for (let i = 0; i < config.length; i++) {
+		let index = i < 10 ? `0${i}` : `${i}`
+		items.push(<DesignItem index={index} text={config[i].title} delayFactor={i} key={i}></DesignItem>)
+		if (i !== config.length - 1) {
+			items.push(<div className="line" key={i + 0.5}></div>)
+		}
+	}
 	return (
 		<Container>
-			<HorizontalScroll reverseScroll={true}>
-				<DesignItem refTest={test}></DesignItem>
-				<div className="line"></div>
-				<DesignItem></DesignItem>
-				<div className="line"></div>
-				<DesignItem></DesignItem>
-				<div className="line"></div>
-				<DesignItem></DesignItem>
-				<div className="line"></div>
-				<DesignItem></DesignItem>
-			</HorizontalScroll>
+			<HorizontalScroll reverseScroll={true}>{items}</HorizontalScroll>
 		</Container>
 	)
 }

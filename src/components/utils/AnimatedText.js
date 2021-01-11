@@ -31,6 +31,22 @@ const Text = styled.div`
 			line-height: 11px;
 			padding: 0 1px;
 		}
+		.designItemTitleIndex {
+			height: 11px;
+			color: var(--grey);
+			font-family: 'Made Outer Sans Thin';
+			font-size: 0.72em;
+			line-height: 11px;
+			padding: 0 0.5px;
+		}
+		.designItemTitleText {
+			height: 11px;
+			color: var(--white);
+			font-family: 'Made Outer Sans Light';
+			font-size: 0.8em;
+			line-height: 11px;
+			padding: 0 0.5px;
+		}
 	}
 	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};
 `
