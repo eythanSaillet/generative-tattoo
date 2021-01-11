@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 
+import Main from './Main'
 import AnimatedText from './AnimatedText'
 import AnimatedLogoSource from '../assets/animatedLogo.webm'
 
@@ -137,6 +138,8 @@ export default function Navigation() {
 	let animatedLogo = useRef(null)
 
 	useEffect(() => {
+		// Play logo animation
+		// animatedLogo.current.play()
 		// Draw nav lines
 		gsap.to(topNavLine1.current, { duration: 1.3, scaleX: 1, ease: Power2.easeInOut })
 		gsap.to(topNavLine2.current, { duration: 1.8, scaleX: 1, ease: Power2.easeInOut })
@@ -188,7 +191,9 @@ export default function Navigation() {
 							<AnimatedText text="INSTAGRAM" type="navLink" stagger={-0.05} delay={600} hover={true}></AnimatedText>
 						</div>
 					</div>
-					<div className="main"></div>
+					<div className="main">
+						<Main></Main>
+					</div>
 				</div>
 			</div>
 		</View>
