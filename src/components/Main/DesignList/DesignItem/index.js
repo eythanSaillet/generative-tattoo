@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import gsap, { Power3 } from 'gsap'
 
 import Title from './Title'
 import Button from './Button'
