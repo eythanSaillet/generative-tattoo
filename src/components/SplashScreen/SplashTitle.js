@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import AnimatedText from '../utils/AnimatedText'
+
 const Title = styled.h1`
 	position: absolute;
 	top: 50%;
@@ -13,5 +15,6 @@ const Title = styled.h1`
 `
 
 export default function SplashTitle() {
-	return <Title>GENERATIVE</Title>
+	return <Title>{/* <AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500} hover={true}></AnimatedText>
+			<AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500} hover={true}></AnimatedText> */}</Title>
 }
