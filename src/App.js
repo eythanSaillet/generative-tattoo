@@ -7,7 +7,7 @@ function App() {
 	return (
 		<Router>
 			<Switch>
-				<Route path="/choose">
+				<Route path="/">
 					<Navigation></Navigation>
 				</Route>
 				<Route path="/">

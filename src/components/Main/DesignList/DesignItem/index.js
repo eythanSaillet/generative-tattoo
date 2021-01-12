@@ -30,7 +30,7 @@ export default function DessignItem({ index, text, delayFactor }) {
 		<Item>
 			<div className="bottomContainer">
 				<Title index={index} text={text} delayFactor={delayFactor}></Title>
-				<Button></Button>
+				<Button delayFactor={delayFactor} />
 			</div>
 		</Item>
 	)

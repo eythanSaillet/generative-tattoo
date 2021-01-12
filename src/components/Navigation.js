@@ -33,7 +33,7 @@ const View = styled.div`
 			height: var(--menuSize);
 			flex-direction: column;
 			justify-content: space-between;
-			.line {
+			> .line {
 				width: 100%;
 				height: var(--menuLineSize);
 				background: var(--white);
@@ -45,7 +45,7 @@ const View = styled.div`
 			width: var(--menuSize);
 			height: 100%;
 			justify-content: space-between;
-			.line {
+			> .line {
 				width: var(--menuLineSize);
 				height: 100%;
 				background: var(--white);
@@ -84,7 +84,7 @@ const View = styled.div`
 				align-items: center;
 				padding-left: 35px;
 			}
-			.line {
+			> .line {
 				width: var(--menuLineSize);
 				height: 100%;
 				background: var(--white);

@@ -8,7 +8,7 @@ import DesignItem from './DesignItem/index'
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
-	.line {
+	.scroller > div > .line {
 		width: var(--menuLineSize);
 		height: 100%;
 		background: var(--white);
@@ -26,7 +26,9 @@ export default function DesignList() {
 	}
 	return (
 		<Container>
-			<HorizontalScroll reverseScroll={true}>{items}</HorizontalScroll>
+			<HorizontalScroll className="scroller" reverseScroll={true}>
+				{items}
+			</HorizontalScroll>
 		</Container>
 	)
 }
