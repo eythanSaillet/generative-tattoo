@@ -3,18 +3,23 @@ import styled from 'styled-components'
 
 import AnimatedText from '../utils/AnimatedText'
 
-const Title = styled.h1`
+const Title = styled.div`
 	position: absolute;
-	top: 50%;
+	top: 62%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	color: #444444;
-	font-family: 'Made Outer Sans Regular';
-	font-size: 3vw;
-	letter-spacing: 70px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	/* mix-blend-mode: difference; */
 `
 
 export default function SplashTitle() {
-	return <Title>{/* <AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500} hover={true}></AnimatedText>
-			<AnimatedText text="INFOS" type="navLink" stagger={-0.05} delay={500} hover={true}></AnimatedText> */}</Title>
+	return (
+		<Title>
+			<AnimatedText text="GENERATIVE" type="splashTitleTop" stagger={0.05} delay={500}></AnimatedText>
+			<AnimatedText text="TATTOO" type="splashTitleBottom" stagger={0.05} delay={750}></AnimatedText>
+		</Title>
+	)
 }

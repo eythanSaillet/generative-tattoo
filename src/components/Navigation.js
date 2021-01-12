@@ -176,7 +176,7 @@ export default function Navigation() {
 						</div>
 					</div>
 					<div className="titleContainer">
-						<AnimatedText text="CHOOSE YOUR DESIGN" type="title" stagger={0.03} delay={600} hover={false}></AnimatedText>
+						<AnimatedText text="CHOOSE YOUR DESIGN" type="navTitle" stagger={0.03} delay={600} hover={false}></AnimatedText>
 					</div>
 					<div className="line" ref={topNavLine3}></div>
 					<div className="selectionButtonContainer"></div>

@@ -6,7 +6,7 @@ export default function SplashScreen() {
 	return (
 		<div>
 			<SplashSketch></SplashSketch>
-			<SplashTitle className="splashTitle"></SplashTitle>
+			<SplashTitle></SplashTitle>
 		</div>
 	)
 }

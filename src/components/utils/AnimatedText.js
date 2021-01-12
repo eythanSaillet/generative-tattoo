@@ -18,7 +18,16 @@ const Text = styled.div`
 		}
 
 		/* TYPES */
-		.title {
+		.splashTitleTop {
+			font-family: 'Made Outer Sans Thin';
+			font-size: 2em;
+			padding: 0 10px;
+		}
+		.splashTitleBottom {
+			font-size: 4em;
+			padding: 0 7px;
+		}
+		.navTitle {
 			height: 32px;
 			padding: 0 5px;
 			font-size: 2.5em;

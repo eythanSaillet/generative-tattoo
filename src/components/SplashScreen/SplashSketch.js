@@ -11,6 +11,8 @@ export default function SplashSketch() {
 	let particleSize = 2
 	let backgroundColor = 0
 	let mouse
+	let isHolding = false
+	let holdValue = 0
 
 	function preload(p5) {
 		particleFont = p5.loadFont(fontSource)
@@ -51,6 +53,15 @@ export default function SplashSketch() {
 		p5.textSize(20)
 		p5.text('FPS: ' + fps.toFixed(2), 100, 100)
 		index++
+
+		// Click & Hold
+		if (isHolding && holdValue <= 1) {
+			holdValue += 0.03
+		} else if (holdValue > 0) {
+			holdValue -= 0.03
+			holdValue = holdValue < 0 ? 0 : holdValue
+		}
+		p5.text('Hold: ' + holdValue.toFixed(2), 100, 300)
 	}
 
 	function updateMouseVector(p5) {
@@ -62,7 +73,7 @@ export default function SplashSketch() {
 		// Every *step pixels, create a particle. Its type depends on the pixel color.
 		let step = 6
 		for (let i = p5.width / 2 - systemWidth / 2; i <= p5.width / 2 + systemWidth / 2; i += step) {
-			for (let j = p5.height / 2 - systemHeight / 2; j <= p5.height / 2 + systemHeight / 2; j += step) {
+			for (let j = p5.height / 1.25 / 2 - systemHeight / 2; j <= p5.height / 1.25 / 2 + systemHeight / 2; j += step) {
 				let color = p5.get(i, j)
 				let type
 				if (color[0] === backgroundColor) {
@@ -84,6 +95,16 @@ export default function SplashSketch() {
 			}
 			_particle.draw(p5)
 		}
+	}
+
+	// Click & Hold
+	function pressed() {
+		console.log('pressed')
+		isHolding = true
+	}
+	function released() {
+		console.log('released')
+		isHolding = false
 	}
 
 	class Particle {
@@ -203,5 +224,5 @@ export default function SplashSketch() {
 		}
 	}
 
-	return <Sketch preload={preload} setup={setup} draw={draw} />
+	return <Sketch preload={preload} setup={setup} draw={draw} mousePressed={pressed} mouseReleased={released} />
 }
