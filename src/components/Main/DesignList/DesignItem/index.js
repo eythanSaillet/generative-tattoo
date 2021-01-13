@@ -16,10 +16,20 @@ const Item = styled.div`
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
+		.effect {
+			visibility: hidden;
+		}
+	}
+
+	// Hover
+	&:hover {
+		.bottomContainer .button .effect {
+			visibility: visible;
+		}
 	}
 `
 
-export default function DessignItem({ index, text, delayFactor }) {
+export default function DesignItem({ index, text, delayFactor }) {
 	// let openItem = () => {
 	// 	let docStyle = getComputedStyle(document.documentElement)
 	// 	let containerMargin = docStyle.getPropertyValue('--containerMargin')
