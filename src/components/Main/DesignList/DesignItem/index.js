@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
+import gsap, { Power3 } from 'gsap'
 
 import Title from './Title'
 import Button from './Button'
@@ -29,18 +30,33 @@ const Item = styled.div`
 	}
 `
 
-export default function DesignItem({ index, text, delayFactor }) {
-	// let openItem = () => {
-	// 	let docStyle = getComputedStyle(document.documentElement)
-	// 	let containerMargin = docStyle.getPropertyValue('--containerMargin')
-	// 	let menuSize = docStyle.getPropertyValue('--menuSize')
-	// 	gsap.to(refTest.current, { duration: 1.7, width: `calc(${window.innerWidth}px - ${containerMargin} - ${menuSize})`, ease: Power3.easeInOut })
-	// }
+export default function DesignItem({ index, text, delayFactor, horizontalScrollRef }) {
+	let item = useRef(null)
+
+	const openItem = () => {
+		// Disable scroll
+		horizontalScrollRef.current.hScrollParent.style.pointerEvents = 'none'
+
+		// Resize item
+		const docStyle = getComputedStyle(document.documentElement)
+		const containerMargin = docStyle.getPropertyValue('--containerMargin')
+		const menuSize = docStyle.getPropertyValue('--menuSize')
+		gsap.to(item.current, { duration: 1.5, width: `calc(${window.innerWidth}px - ${containerMargin} - ${menuSize})`, ease: Power3.easeInOut })
+
+		// Scroll to the item
+		const scrollDivStyle = window.getComputedStyle(horizontalScrollRef.current.hScrollParent.children[0])
+		const scrollDivTransformMatrix = scrollDivStyle.transform || scrollDivStyle.webkitTransform || scrollDivStyle.mozTransform
+		const scrollDivTransformMatrixValues = scrollDivTransformMatrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+		const scrollValue = -scrollDivTransformMatrixValues[4] - item.current.offsetLeft
+		gsap.to(horizontalScrollRef.current.hScrollParent, { duration: 1.5, x: scrollValue, ease: Power3.easeInOut })
+	}
 	return (
-		<Item>
+		<Item ref={item}>
 			<div className="bottomContainer">
 				<Title index={index} text={text} delayFactor={delayFactor}></Title>
-				<Button delayFactor={delayFactor} />
+				<div onClick={openItem}>
+					<Button delayFactor={delayFactor} />
+				</div>
 			</div>
 		</Item>
 	)

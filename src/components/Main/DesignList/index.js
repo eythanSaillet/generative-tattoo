@@ -9,22 +9,27 @@ import DesignItem from './DesignItem/index'
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
-	.scroller > div > .line {
-		width: var(--menuLineSize);
-		height: 100%;
-		background: var(--white);
-		transform-origin: top;
-		transform: scaleY(0);
+	overflow: hidden;
+	.scroller {
+		overflow: visible !important;
+		> div > .line {
+			width: var(--menuLineSize);
+			height: 100%;
+			background: var(--white);
+			transform-origin: top;
+			transform: scaleY(0);
+		}
 	}
 `
 
 export default function DesignList() {
+	let horizontalScroll = useRef(null)
 	let lines = useRef([])
 
 	let items = []
 	for (let i = 0; i < config.length; i++) {
 		let index = i < 10 ? `0${i}` : `${i}`
-		items.push(<DesignItem index={index} text={config[i].title} delayFactor={i} key={i}></DesignItem>)
+		items.push(<DesignItem index={index} text={config[i].title} delayFactor={i} key={i} horizontalScrollRef={horizontalScroll}></DesignItem>)
 		if (i !== config.length - 1) {
 			items.push(<div className="line" key={i + 0.5} ref={(element) => lines.current.push(element)}></div>)
 		}
@@ -38,7 +43,7 @@ export default function DesignList() {
 
 	return (
 		<Container>
-			<HorizontalScroll className="scroller" reverseScroll={true}>
+			<HorizontalScroll className="scroller" reverseScroll={true} ref={horizontalScroll}>
 				{items}
 			</HorizontalScroll>
 		</Container>
