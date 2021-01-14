@@ -12,6 +12,7 @@ export default function P5Sketch({ holdValue }) {
 	let backgroundColor = 0
 	let mouse
 	let isHolding = false
+	let randomForceFactor = 50
 	// let holdValue.current = 0
 
 	function preload(p5) {
@@ -57,7 +58,13 @@ export default function P5Sketch({ holdValue }) {
 		// Click & Hold
 		if (isHolding && holdValue.current <= 1) {
 			holdValue.current += 0.015
-			// APPLY RANDOM FORCE TO RANDOM PARTICLE
+
+			// Apply random force to random particle
+			for (let i = 0; i < 10; i++) {
+				let randomParticle = particles[Math.floor(Math.random() * particles.length)]
+				randomParticle.acc.x += (Math.random() - 0.5) * randomForceFactor
+				randomParticle.acc.y += (Math.random() - 0.5) * randomForceFactor
+			}
 		} else if (holdValue.current > 0) {
 			holdValue.current -= 0.015
 			holdValue.current = holdValue.current < 0 ? 0 : holdValue.current
