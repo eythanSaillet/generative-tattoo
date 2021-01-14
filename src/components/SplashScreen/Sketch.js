@@ -3,7 +3,7 @@ import Sketch from 'react-p5'
 
 import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
-export default function SplashSketch() {
+export default function P5Sketch({ holdValue }) {
 	let particleFont
 	let systemWidth = 550
 	let systemHeight = 150
@@ -12,7 +12,7 @@ export default function SplashSketch() {
 	let backgroundColor = 0
 	let mouse
 	let isHolding = false
-	let holdValue = 0
+	// let holdValue.current = 0
 
 	function preload(p5) {
 		particleFont = p5.loadFont(fontSource)
@@ -55,13 +55,14 @@ export default function SplashSketch() {
 		index++
 
 		// Click & Hold
-		if (isHolding && holdValue <= 1) {
-			holdValue += 0.03
-		} else if (holdValue > 0) {
-			holdValue -= 0.03
-			holdValue = holdValue < 0 ? 0 : holdValue
+		if (isHolding && holdValue.current <= 1) {
+			holdValue.current += 0.015
+			// APPLY RANDOM FORCE TO RANDOM PARTICLE
+		} else if (holdValue.current > 0) {
+			holdValue.current -= 0.015
+			holdValue.current = holdValue.current < 0 ? 0 : holdValue.current
 		}
-		p5.text('Hold: ' + holdValue.toFixed(2), 100, 300)
+		p5.text('Hold: ' + holdValue.current.toFixed(2), 100, 300)
 	}
 
 	function updateMouseVector(p5) {
@@ -71,7 +72,7 @@ export default function SplashSketch() {
 
 	function createParticles(p5) {
 		// Every *step pixels, create a particle. Its type depends on the pixel color.
-		let step = 6
+		let step = 8
 		for (let i = p5.width / 2 - systemWidth / 2; i <= p5.width / 2 + systemWidth / 2; i += step) {
 			for (let j = p5.height / 1.25 / 2 - systemHeight / 2; j <= p5.height / 1.25 / 2 + systemHeight / 2; j += step) {
 				let color = p5.get(i, j)

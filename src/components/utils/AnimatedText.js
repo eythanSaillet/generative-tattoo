@@ -22,10 +22,12 @@ const Text = styled.div`
 			font-family: 'Made Outer Sans Thin';
 			font-size: 2em;
 			padding: 0 10px;
+			user-select: none;
 		}
 		.splashTitleBottom {
 			font-size: 4em;
 			padding: 0 7px;
+			user-select: none;
 		}
 		.navTitle {
 			height: 32px;

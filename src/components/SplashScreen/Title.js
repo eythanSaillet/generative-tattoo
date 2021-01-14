@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import AnimatedText from '../utils/AnimatedText'
 
-const Title = styled.div`
+const Container = styled.div`
 	position: absolute;
 	top: 62%;
 	left: 50%;
@@ -15,11 +15,11 @@ const Title = styled.div`
 	/* mix-blend-mode: difference; */
 `
 
-export default function SplashTitle() {
+export default function Title() {
 	return (
-		<Title>
+		<Container>
 			<AnimatedText text="GENERATIVE" type="splashTitleTop" stagger={0.05} delay={500}></AnimatedText>
 			<AnimatedText text="TATTOO" type="splashTitleBottom" stagger={0.05} delay={750}></AnimatedText>
-		</Title>
+		</Container>
 	)
 }
