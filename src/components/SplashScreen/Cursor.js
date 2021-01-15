@@ -5,6 +5,7 @@ const Container = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
+	mix-blend-mode: difference;
 	.circle {
 		width: 60px;
 		height: 60px;

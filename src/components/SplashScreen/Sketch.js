@@ -10,9 +10,12 @@ export default function P5Sketch({ holdValue }) {
 	let particles = []
 	let particleSize = 2
 	let backgroundColor = 0
-	let mouse
+	let mouse = {}
+	let mouseForce = 0.04
+	let mouseForceRadius = 85
 	let isHolding = false
 	let randomForceFactor = 50
+	let mouseFactor = 1
 	// let holdValue.current = 0
 
 	function preload(p5) {
@@ -23,7 +26,7 @@ export default function P5Sketch({ holdValue }) {
 		// p5.createCanvas(1000, 500).parent(canvasParentRef)
 		p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef)
 		p5.background(backgroundColor)
-		// p5.frameRate(30)
+		p5.frameRate(30)
 
 		// Draw the text we are going to use to create the particles
 		p5.textSize(100)
@@ -56,18 +59,34 @@ export default function P5Sketch({ holdValue }) {
 		index++
 
 		// Click & Hold
-		if (isHolding && holdValue.current <= 1) {
-			holdValue.current += 0.015
+		if (holdValue.current >= 1) {
+			// Explosion
+			for (const _particle of particles) {
+				_particle.acc.x += (_particle.pos.x - mouse.x) * 0.1
+				_particle.acc.y += (_particle.pos.y - mouse.y) * 0.1
+			}
+		} else if (isHolding && holdValue.current < 1) {
+			holdValue.current += 0.045
+
+			// Tweak mouse settings to attract particles
+			mouseFactor = -1
+			mouseForce = 0.007
+			mouseForceRadius = 1000
 
 			// Apply random force to random particle
-			for (let i = 0; i < 10; i++) {
-				let randomParticle = particles[Math.floor(Math.random() * particles.length)]
-				randomParticle.acc.x += (Math.random() - 0.5) * randomForceFactor
-				randomParticle.acc.y += (Math.random() - 0.5) * randomForceFactor
-			}
+			// for (let i = 0; i < 10; i++) {
+			// 	let randomParticle = particles[Math.floor(Math.random() * particles.length)]
+			// 	randomParticle.acc.x += (Math.random() - 0.5) * randomForceFactor
+			// 	randomParticle.acc.y += (Math.random() - 0.5) * randomForceFactor
+			// }
 		} else if (holdValue.current > 0) {
-			holdValue.current -= 0.015
+			holdValue.current -= 0.045
 			holdValue.current = holdValue.current < 0 ? 0 : holdValue.current
+
+			// Reset mouse settings
+			mouseFactor = 1
+			mouseForce = 0.04
+			mouseForceRadius = 85
 		}
 		p5.text('Hold: ' + holdValue.current.toFixed(2), 100, 300)
 	}
@@ -136,8 +155,6 @@ export default function P5Sketch({ holdValue }) {
 			this.maxSpeed = 10
 			this.maxForce = 0.5
 			this.brakeRadius = 100
-			this.mouseForceRadius = 85
-			this.mouseForce = 0.04
 
 			this.color = 255
 		}
@@ -213,14 +230,14 @@ export default function P5Sketch({ holdValue }) {
 
 			// Calculate and apply the force within a certain distance
 			let dist = Math.sqrt(Math.pow(target.x, 2) + Math.pow(target.y, 2))
-			if (dist < this.mouseForceRadius) {
+			if (dist < mouseForceRadius) {
 				// Define steering force
 				let steering = {
 					x: target.x - this.vel.x,
 					y: target.y - this.vel.y,
 				}
-				steering.x *= -this.mouseForce
-				steering.y *= -this.mouseForce
+				steering.x *= -mouseForce * mouseFactor
+				steering.y *= -mouseForce * mouseFactor
 				return steering
 			}
 			return { x: 0, y: 0 }
