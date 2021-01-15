@@ -14,7 +14,7 @@ export default function P5Sketch({ holdValue }) {
 	let mouseForce = 0.04
 	let mouseForceRadius = 85
 	let isHolding = false
-	let randomForceFactor = 50
+	// let randomForceFactor = 50
 	let mouseFactor = 1
 	// let holdValue.current = 0
 
@@ -26,7 +26,7 @@ export default function P5Sketch({ holdValue }) {
 		// p5.createCanvas(1000, 500).parent(canvasParentRef)
 		p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef)
 		p5.background(backgroundColor)
-		p5.frameRate(30)
+		// p5.frameRate(45)
 
 		// Draw the text we are going to use to create the particles
 		p5.textSize(100)

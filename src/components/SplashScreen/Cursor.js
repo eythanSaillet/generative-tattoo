@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -25,6 +25,19 @@ export default function Cursor({ holdValue }) {
 	let mousePos = { x: 0, y: 0 }
 	const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
 
+	// Add & remove mouse event
+	const addEventListeners = () => {
+		window.addEventListener('mousemove', onMouseMove)
+	}
+	const removeEventListeners = () => {
+		window.removeEventListener('mousemove', onMouseMove)
+	}
+
+	// Update mouse pos on mouse move
+	const onMouseMove = (e) => {
+		mousePos = { x: e.clientX, y: e.clientY }
+	}
+
 	useEffect(() => {
 		addEventListeners()
 
@@ -43,19 +56,6 @@ export default function Cursor({ holdValue }) {
 			clearInterval(interval)
 		}
 	}, [])
-
-	// Add & remove mouse event
-	const addEventListeners = () => {
-		window.addEventListener('mousemove', onMouseMove)
-	}
-	const removeEventListeners = () => {
-		window.removeEventListener('mousemove', onMouseMove)
-	}
-
-	// Update mouse pos on mouse move
-	const onMouseMove = (e) => {
-		mousePos = { x: e.clientX, y: e.clientY }
-	}
 
 	return (
 		<Container>
