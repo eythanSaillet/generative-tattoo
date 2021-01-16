@@ -1,9 +1,9 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import Sketch from './Sketch'
 import Title from './Title'
-import Cursor from './Cursor'
+// import Cursor from './Cursor'
 
 const Container = styled.div`
 	position: relative;
@@ -12,13 +12,11 @@ const Container = styled.div`
 `
 
 export default function SplashScreen() {
-	let holdValue = useRef(0)
-
 	return (
 		<Container>
-			<Sketch holdValue={holdValue}></Sketch>
+			<Sketch></Sketch>
 			<Title></Title>
-			<Cursor holdValue={holdValue}></Cursor>
+			{/* <Cursor holdValue={holdValue}></Cursor> */}
 		</Container>
 	)
 }

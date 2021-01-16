@@ -1,22 +1,26 @@
+import gsap from 'gsap/gsap-core'
 import React from 'react'
 import Sketch from 'react-p5'
 
 import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
-export default function P5Sketch({ holdValue }) {
+export default function P5Sketch() {
 	let particleFont
 	let systemWidth = 550
 	let systemHeight = 150
 	let particles = []
 	let particleSize = 2
 	let backgroundColor = 0
+	let sensibleToForces = true
 	let mouse = {}
+	let mouseWithLerp = { x: 0, y: 0 }
 	let mouseForce = 0.04
 	let mouseForceRadius = 85
 	let isHolding = false
-	// let randomForceFactor = 50
+	let randomForceFactor = 75
 	let mouseFactor = 1
-	// let holdValue.current = 0
+	let holdValue = { value: 0 }
+	let holdAnimationFinish = false
 
 	function preload(p5) {
 		particleFont = p5.loadFont(fontSource)
@@ -59,36 +63,55 @@ export default function P5Sketch({ holdValue }) {
 		index++
 
 		// Click & Hold
-		if (holdValue.current >= 1) {
+		if (holdValue.value >= 1 && !holdAnimationFinish) {
+			holdAnimationFinish = true
+			sensibleToForces = false
+
 			// Explosion
 			for (const _particle of particles) {
-				_particle.acc.x += (_particle.pos.x - mouse.x) * 0.1
-				_particle.acc.y += (_particle.pos.y - mouse.y) * 0.1
+				_particle.acc.x += ((_particle.pos.x - mouse.x) / p5.width) * 150
+				_particle.acc.y += ((_particle.pos.y - mouse.y) / p5.height) * 150
 			}
-		} else if (isHolding && holdValue.current < 1) {
-			holdValue.current += 0.045
+			// Destroy particles
+			let interval = setInterval(() => {
+				for (let i = 0; i < 15; i++) {
+					if (particles.length !== 0) {
+						const randomIndex = Math.floor(particles.length * Math.random())
+						particles.splice(randomIndex, 1)
+					} else {
+						clearInterval(interval)
+					}
+				}
+			}, 10)
+
+			// Cursor explosion
+			gsap.to(holdValue, { duration: 0.3, value: -0.5 })
+		} else if (isHolding && holdValue.value < 1 && !holdAnimationFinish) {
+			holdValue.value += 0.025
 
 			// Tweak mouse settings to attract particles
-			mouseFactor = -1
-			mouseForce = 0.007
-			mouseForceRadius = 1000
+			// mouseFactor = -1
+			// mouseForce = 0.007
+			// mouseForceRadius = 1000
 
 			// Apply random force to random particle
-			// for (let i = 0; i < 10; i++) {
-			// 	let randomParticle = particles[Math.floor(Math.random() * particles.length)]
-			// 	randomParticle.acc.x += (Math.random() - 0.5) * randomForceFactor
-			// 	randomParticle.acc.y += (Math.random() - 0.5) * randomForceFactor
-			// }
-		} else if (holdValue.current > 0) {
-			holdValue.current -= 0.045
-			holdValue.current = holdValue.current < 0 ? 0 : holdValue.current
+			for (let i = 0; i < 15; i++) {
+				let randomParticle = particles[Math.floor(Math.random() * particles.length)]
+				randomParticle.acc.x += (Math.random() - 0.5) * randomForceFactor * holdValue.value
+				randomParticle.acc.y += (Math.random() - 0.5) * randomForceFactor * holdValue.value
+			}
+		} else if (holdValue.value > 0 && !holdAnimationFinish) {
+			holdValue.value -= 0.025
+			holdValue.value = holdValue.value < 0 ? 0 : holdValue.value
 
 			// Reset mouse settings
 			mouseFactor = 1
 			mouseForce = 0.04
 			mouseForceRadius = 85
 		}
-		p5.text('Hold: ' + holdValue.current.toFixed(2), 100, 300)
+		p5.text('Hold: ' + holdValue.value.toFixed(2), 100, 300)
+
+		drawCursor(p5)
 	}
 
 	function updateMouseVector(p5) {
@@ -126,12 +149,24 @@ export default function P5Sketch({ holdValue }) {
 
 	// Click & Hold
 	function pressed() {
-		console.log('pressed')
 		isHolding = true
 	}
 	function released() {
-		console.log('released')
 		isHolding = false
+	}
+
+	// Draw cursor
+	const lerp = (start, end, amt) => {
+		return (1 - amt) * start + amt * end
+	}
+	function drawCursor(p5) {
+		mouseWithLerp.x = lerp(mouseWithLerp.x, mouse.x, 0.2)
+		mouseWithLerp.y = lerp(mouseWithLerp.y, mouse.y, 0.2)
+
+		p5.fill('white')
+		p5.circle(mouseWithLerp.x, mouseWithLerp.y, 50)
+		p5.fill('black')
+		p5.circle(mouseWithLerp.x, mouseWithLerp.y, 43 * (1 - holdValue.value))
 	}
 
 	class Particle {
@@ -198,15 +233,17 @@ export default function P5Sketch({ holdValue }) {
 		}
 
 		applyForce(p5) {
-			// Add attraction force to acceleration
-			let attractionForce = this.originAttraction(p5)
-			this.acc.x += attractionForce.x
-			this.acc.y += attractionForce.y
+			if (sensibleToForces) {
+				// Add attraction force to acceleration
+				let attractionForce = this.originAttraction(p5)
+				this.acc.x += attractionForce.x
+				this.acc.y += attractionForce.y
 
-			// Add repulsion force to acceleration
-			let repulsionForce = this.mouseRepulsion(p5)
-			this.acc.x += repulsionForce.x
-			this.acc.y += repulsionForce.y
+				// Add repulsion force to acceleration
+				let repulsionForce = this.mouseRepulsion(p5)
+				this.acc.x += repulsionForce.x
+				this.acc.y += repulsionForce.y
+			}
 
 			// Add acceleration to velocity
 			this.vel.x += this.acc.x

@@ -23,11 +23,13 @@ const Text = styled.div`
 			font-size: 2em;
 			padding: 0 10px;
 			user-select: none;
+			mix-blend-mode: difference;
 		}
 		.splashTitleBottom {
 			font-size: 4em;
 			padding: 0 7px;
 			user-select: none;
+			mix-blend-mode: difference;
 		}
 		.navTitle {
 			height: 32px;
