@@ -21,6 +21,7 @@ export default function P5Sketch() {
 	let mouseFactor = 1
 	let holdValue = { value: 0 }
 	let holdAnimationFinish = false
+	let blackScreenOpacity = { value: 0 }
 
 	function preload(p5) {
 		particleFont = p5.loadFont(fontSource)
@@ -68,10 +69,16 @@ export default function P5Sketch() {
 			sensibleToForces = false
 
 			// Explosion
+			// for (const _particle of particles) {
+			// 	_particle.acc.x += ((_particle.pos.x - mouse.x) / p5.width) * 150
+			// 	_particle.acc.y += ((_particle.pos.y - mouse.y) / p5.height) * 150
+			// }
 			for (const _particle of particles) {
-				_particle.acc.x += ((_particle.pos.x - mouse.x) / p5.width) * 150
-				_particle.acc.y += ((_particle.pos.y - mouse.y) / p5.height) * 150
+				// let randomDir = p5.createVector().random2D()
+				_particle.acc.x += (Math.random() - 0.5) * 150
+				_particle.acc.y += (Math.random() - 0.5) * 150
 			}
+			gsap.to(blackScreenOpacity, { duration: 1.5, value: 1, delay: 0.5 })
 			// Destroy particles
 			let interval = setInterval(() => {
 				for (let i = 0; i < 15; i++) {
@@ -112,6 +119,11 @@ export default function P5Sketch() {
 		p5.text('Hold: ' + holdValue.value.toFixed(2), 100, 300)
 
 		drawCursor(p5)
+
+		if (holdAnimationFinish) {
+			// Draw blackscreen
+			p5.background(`rgba(0%, 0%, 0%, ${blackScreenOpacity.value})`)
+		}
 	}
 
 	function updateMouseVector(p5) {
