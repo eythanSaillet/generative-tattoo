@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import gsap, { Power3, Power2 } from 'gsap'
 
@@ -64,7 +64,7 @@ const Text = styled.div`
 	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};
 `
 
-export default function AnimatedText({ text, type, stagger, delay, hover }) {
+const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => {
 	let spans = []
 	let spansRefs = useRef([])
 	let isAnimated = useRef(true)
@@ -121,6 +121,18 @@ export default function AnimatedText({ text, type, stagger, delay, hover }) {
 		}
 	}
 
+	// Unmount animation
+	useImperativeHandle(ref, () => ({
+		remove() {
+			gsap.to(spansRefs.current, {
+				duration: 0.7,
+				y: '105%',
+				stagger: stagger,
+				ease: Power3.easeOut,
+			})
+		},
+	}))
+
 	return (
 		<Text
 			type={type}
@@ -133,4 +145,6 @@ export default function AnimatedText({ text, type, stagger, delay, hover }) {
 			<div className="textContainer">{spans}</div>
 		</Text>
 	)
-}
+})
+
+export default AnimatedText

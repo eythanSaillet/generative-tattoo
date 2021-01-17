@@ -75,8 +75,8 @@ export default function P5Sketch() {
 			// }
 			for (const _particle of particles) {
 				// let randomDir = p5.createVector().random2D()
-				_particle.acc.x += (Math.random() - 0.5) * 150
-				_particle.acc.y += (Math.random() - 0.5) * 150
+				_particle.acc.x += (Math.random() - 0.5) * 100
+				_particle.acc.y += (Math.random() - 0.5) * 100
 			}
 			gsap.to(blackScreenOpacity, { duration: 1.5, value: 1, delay: 0.5 })
 			// Destroy particles
