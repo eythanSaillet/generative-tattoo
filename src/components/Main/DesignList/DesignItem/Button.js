@@ -41,12 +41,14 @@ const Container = styled.div`
 	}
 	.effect {
 		position: absolute;
-		width: 10px;
-		height: 10px;
-		top: 0;
-		left: 0;
+		width: 75px;
+		height: 7px;
+		top: 50%;
+		left: 50%;
 		transform: translate(-50%, -50%);
 		background: var(--black);
+		z-index: 5;
+		pointer-events: none;
 	}
 
 	// Hover
@@ -74,10 +76,7 @@ export default function Button({ delayFactor }) {
 	useEffect(() => {
 		// Launch animation
 		let effectAnimation = gsap.timeline({ repeat: -1 })
-		effectAnimation.to(effect.current, { duration: 0.75, x: 40, ease: Linear.easeNone, delay: 0.03 })
-		effectAnimation.to(effect.current, { duration: 0.75, y: 40, ease: Linear.easeNone, delay: 0.03 })
-		effectAnimation.to(effect.current, { duration: 0.75, x: 0, ease: Linear.easeNone, delay: 0.03 })
-		effectAnimation.to(effect.current, { duration: 0.75, y: 0, ease: Linear.easeNone, delay: 0.03 })
+		effectAnimation.to(effect.current, { duration: 5, rotation: 360, ease: Linear.easeNone })
 
 		// Display the button
 		gsap.to(displayEffect.current, { duration: 3, scaleY: 0, rotate: 405, ease: Power1.eseIn, delay: 1 + delayFactor * 0.75 })
