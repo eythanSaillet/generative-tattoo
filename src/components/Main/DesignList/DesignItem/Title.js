@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 
 import AnimatedText from '../../../utils/AnimatedText'
@@ -13,12 +13,26 @@ const Container = styled.div`
 	}
 `
 
-export default function Title({ index, text, delayFactor }) {
+const Title = forwardRef(({ index, text, delayFactor }, ref) => {
+	let designItemTitleIndex = useRef(null)
+	let designItemTitleText1 = useRef(null)
+	let designItemTitleText2 = useRef(null)
+
+	// Trigger unmount animations
+	useImperativeHandle(ref, () => ({
+		remove() {
+			designItemTitleIndex.current.remove(0.3)
+			designItemTitleText1.current.remove(0.4)
+			designItemTitleText2.current.remove(0.6)
+		},
+	}))
+
 	return (
 		<Container>
-			<AnimatedText text={index} type="designItemTitleIndex" stagger={-0.05} delay={1600 + delayFactor * 750}></AnimatedText>
-			<AnimatedText text={text[0]} type="designItemTitleText" stagger={-0.05} delay={1300 + delayFactor * 750}></AnimatedText>
-			<AnimatedText text={text[1]} type="designItemTitleText" stagger={-0.05} delay={1200 + delayFactor * 750}></AnimatedText>
+			<AnimatedText text={index} type="designItemTitleIndex" stagger={-0.05} delay={1600 + delayFactor * 750} ref={designItemTitleIndex}></AnimatedText>
+			<AnimatedText text={text[0]} type="designItemTitleText" stagger={-0.05} delay={1300 + delayFactor * 750} ref={designItemTitleText1}></AnimatedText>
+			<AnimatedText text={text[1]} type="designItemTitleText" stagger={-0.05} delay={1200 + delayFactor * 750} ref={designItemTitleText2}></AnimatedText>
 		</Container>
 	)
-}
+})
+export default Title

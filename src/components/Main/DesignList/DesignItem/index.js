@@ -32,6 +32,7 @@ const Item = styled.div`
 
 export default function DesignItem({ index, text, delayFactor, horizontalScrollRef }) {
 	let item = useRef(null)
+	let title = useRef(null)
 
 	const openItem = () => {
 		// Disable scroll
@@ -53,8 +54,13 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 	return (
 		<Item ref={item}>
 			<div className="bottomContainer">
-				<Title index={index} text={text} delayFactor={delayFactor}></Title>
-				<div onClick={openItem}>
+				<Title index={index} text={text} delayFactor={delayFactor} ref={title}></Title>
+				<div
+					onClick={() => {
+						openItem()
+						title.current.remove()
+					}}
+				>
 					<Button delayFactor={delayFactor} />
 				</div>
 			</div>

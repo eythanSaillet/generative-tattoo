@@ -123,12 +123,13 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => 
 
 	// Unmount animation
 	useImperativeHandle(ref, () => ({
-		remove() {
+		remove(delay) {
 			gsap.to(spansRefs.current, {
 				duration: 0.7,
 				y: '105%',
 				stagger: stagger,
-				ease: Power3.easeOut,
+				ease: Power3.easeIn,
+				delay: delay,
 			})
 		},
 	}))
