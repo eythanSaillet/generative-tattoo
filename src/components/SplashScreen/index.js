@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import Sketch from './Sketch'
@@ -13,10 +13,12 @@ const Container = styled.div`
 `
 
 export default function SplashScreen() {
+	let title = useRef(null)
+
 	return (
 		<Container>
-			<Sketch></Sketch>
-			<Title></Title>
+			<Sketch titleRef={title} />
+			<Title ref={title} />
 			{/* <Cursor holdValue={holdValue}></Cursor> */}
 		</Container>
 	)

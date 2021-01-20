@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 
 import AnimatedText from '../utils/AnimatedText'
@@ -15,19 +15,23 @@ const Container = styled.div`
 	/* mix-blend-mode: difference; */
 `
 
-export default function Title() {
+const Title = forwardRef(({}, ref) => {
 	let splashTitleTop = useRef(null)
 	let splashTitleBottom = useRef(null)
-	useEffect(() => {
-		setTimeout(() => {
-			splashTitleTop.current.remove()
-			splashTitleBottom.current.remove()
-		}, 3000)
-	})
+
+	// Unmount animation
+	useImperativeHandle(ref, () => ({
+		remove(delay) {
+			splashTitleTop.current.remove(delay)
+			splashTitleBottom.current.remove(delay)
+		},
+	}))
+
 	return (
 		<Container>
 			<AnimatedText text="GENERATIVE" type="splashTitleTop" stagger={0.05} delay={500} ref={splashTitleTop}></AnimatedText>
 			<AnimatedText text="TATTOO" type="splashTitleBottom" stagger={0.05} delay={750} ref={splashTitleBottom}></AnimatedText>
 		</Container>
 	)
-}
+})
+export default Title

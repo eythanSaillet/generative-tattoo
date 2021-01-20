@@ -4,7 +4,7 @@ import Sketch from 'react-p5'
 
 import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
-export default function P5Sketch() {
+export default function P5Sketch({ titleRef }) {
 	let particleFont
 	let systemWidth = 550
 	let systemHeight = 150
@@ -79,20 +79,24 @@ export default function P5Sketch() {
 				_particle.acc.y += (Math.random() - 0.5) * 100
 			}
 			gsap.to(blackScreenOpacity, { duration: 1.5, value: 1, delay: 0.5 })
+
 			// Destroy particles
-			let interval = setInterval(() => {
-				for (let i = 0; i < 15; i++) {
-					if (particles.length !== 0) {
-						const randomIndex = Math.floor(particles.length * Math.random())
-						particles.splice(randomIndex, 1)
-					} else {
-						clearInterval(interval)
-					}
-				}
-			}, 10)
+			// let interval = setInterval(() => {
+			// 	for (let i = 0; i < 15; i++) {
+			// 		if (particles.length !== 0) {
+			// 			const randomIndex = Math.floor(particles.length * Math.random())
+			// 			particles.splice(randomIndex, 1)
+			// 		} else {
+			// 			clearInterval(interval)
+			// 		}
+			// 	}
+			// }, 10)
 
 			// Cursor explosion
 			gsap.to(holdValue, { duration: 0.3, value: -0.5 })
+
+			// Remove title
+			titleRef.current.remove(0.2)
 		} else if (isHolding && holdValue.value < 1 && !holdAnimationFinish) {
 			holdValue.value += 0.025
 
