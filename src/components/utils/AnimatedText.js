@@ -147,5 +147,4 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => 
 		</Text>
 	)
 })
-
 export default AnimatedText

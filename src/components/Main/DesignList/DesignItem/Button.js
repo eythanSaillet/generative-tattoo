@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import gsap, { Linear, Power1 } from 'gsap'
 
@@ -66,7 +66,7 @@ const Container = styled.div`
 	}
 `
 
-export default function Button({ delayFactor }) {
+const Button = forwardRef(({ delayFactor }, ref) => {
 	let displayEffect = useRef(null)
 	let effect = useRef(null)
 
@@ -79,12 +79,24 @@ export default function Button({ delayFactor }) {
 		effectAnimation.to(effect.current, { duration: 5, rotation: 360, ease: Linear.easeNone })
 
 		// Display the button
-		gsap.to(displayEffect.current, { duration: 3, scaleY: 0, rotate: 405, ease: Power1.eseIn, delay: 1 + delayFactor * 0.75 })
+		gsap.to(displayEffect.current, { duration: 3, scaleY: 0, rotate: 405, delay: 1 + delayFactor * 0.75 })
 
 		// Display the arrows
 		gsap.to(arrowTop.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 })
 		gsap.to(arrowBottom.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 })
 	}, [delayFactor])
+
+	// Unmount animation
+	useImperativeHandle(ref, () => ({
+		remove(delay) {
+			// Remove the button
+			gsap.to(displayEffect.current, { duration: 3, scaleY: 15, rotate: 0, delay: 0.5 + delay })
+
+			// Remove the arrows
+			gsap.to(arrowTop.current, { duration: 1, scaleX: 0, delay: delay, ease: Power1.easeIn })
+			gsap.to(arrowBottom.current, { duration: 1, scaleX: 0, delay: delay, ease: Power1.easeIn })
+		},
+	}))
 
 	return (
 		<Container className="button">
@@ -96,4 +108,5 @@ export default function Button({ delayFactor }) {
 			<div className="effect" ref={effect}></div>
 		</Container>
 	)
-}
+})
+export default Button
