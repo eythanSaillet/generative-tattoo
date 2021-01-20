@@ -16,7 +16,7 @@ const Container = styled.div`
 	/* mix-blend-mode: difference; */
 `
 
-const Title = forwardRef(({}, ref) => {
+const Title = forwardRef((props, ref) => {
 	let splashTitleTop = useRef(null)
 	let splashTitleBottom = useRef(null)
 

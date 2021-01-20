@@ -45,8 +45,8 @@ export default function P5Sketch({ titleRef }) {
 		createParticles(p5)
 	}
 
-	let index = 0
-	let fps = 0
+	// let index = 0
+	// let fps = 0
 	const draw = (p5) => {
 		p5.background(backgroundColor)
 		updateMouseVector(p5)
