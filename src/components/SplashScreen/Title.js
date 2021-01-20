@@ -5,12 +5,13 @@ import AnimatedText from '../utils/AnimatedText'
 
 const Container = styled.div`
 	position: absolute;
+	height: 105px;
 	top: 62%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	/* mix-blend-mode: difference; */
 `

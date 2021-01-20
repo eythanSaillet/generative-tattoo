@@ -24,12 +24,14 @@ const Text = styled.div`
 			padding: 0 10px;
 			user-select: none;
 			mix-blend-mode: difference;
+			line-height: 27px;
 		}
 		.splashTitleBottom {
 			font-size: 4em;
 			padding: 0 7px;
 			user-select: none;
 			mix-blend-mode: difference;
+			line-height: 52px;
 		}
 		.navTitle {
 			height: 32px;

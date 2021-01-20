@@ -13,7 +13,7 @@ export default function P5Sketch({ titleRef }) {
 	let backgroundColor = 0
 	let sensibleToForces = true
 	let mouse = {}
-	let mouseWithLerp = { x: 0, y: 0 }
+	let mouseWithLerp = { x: window.innerWidth / 2, y: -100 }
 	let mouseForce = 0.04
 	let mouseForceRadius = 85
 	let isHolding = false
@@ -53,15 +53,15 @@ export default function P5Sketch({ titleRef }) {
 		updateParticles(p5)
 
 		// Draw FPS (rounded to 2 decimal places) at the bottom left of the screen
-		if (index === 10) {
-			fps = p5.frameRate()
-			index = 0
-		}
-		p5.fill(255)
-		p5.stroke(0)
-		p5.textSize(20)
-		p5.text('FPS: ' + fps.toFixed(2), 100, 100)
-		index++
+		// if (index === 10) {
+		// 	fps = p5.frameRate()
+		// 	index = 0
+		// }
+		// p5.fill(255)
+		// p5.stroke(0)
+		// p5.textSize(20)
+		// p5.text('FPS: ' + fps.toFixed(2), 100, 100)
+		// index++
 
 		// Click & Hold
 		if (holdValue.value >= 1 && !holdAnimationFinish) {
@@ -120,7 +120,7 @@ export default function P5Sketch({ titleRef }) {
 			mouseForce = 0.04
 			mouseForceRadius = 85
 		}
-		p5.text('Hold: ' + holdValue.value.toFixed(2), 100, 300)
+		// p5.text('Hold: ' + holdValue.value.toFixed(2), 100, 300)
 
 		drawCursor(p5)
 
@@ -179,6 +179,7 @@ export default function P5Sketch({ titleRef }) {
 		mouseWithLerp.x = lerp(mouseWithLerp.x, mouse.x, 0.2)
 		mouseWithLerp.y = lerp(mouseWithLerp.y, mouse.y, 0.2)
 
+		p5.stroke(0)
 		p5.fill('white')
 		p5.circle(mouseWithLerp.x, mouseWithLerp.y, 50)
 		p5.fill('black')
