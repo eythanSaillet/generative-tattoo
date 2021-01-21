@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
 
 import DesignList from './DesignList/index'
+import Custom from './Custom/index'
 
 const Container = styled.div`
 	width: 100%;
@@ -14,9 +15,11 @@ export default function Main() {
 	return (
 		<Container>
 			<Switch>
-				<Route path={`${match.path}/:design`}></Route>
+				<Route path={`${match.path}/:design`}>
+					<Custom />
+				</Route>
 				<Route path={match.path}>
-					<DesignList></DesignList>
+					<DesignList />
 				</Route>
 			</Switch>
 		</Container>
