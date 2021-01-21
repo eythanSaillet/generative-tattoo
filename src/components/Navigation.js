@@ -79,21 +79,14 @@ const View = styled.div`
 				}
 			}
 			.titleContainer {
-				width: calc(80% - var(--menuSize) - 35px);
+				width: calc(80% - var(--menuSize));
 				height: 100%;
 				display: flex;
 				align-items: center;
 				padding-left: 35px;
 			}
-			> .line {
-				width: var(--menuLineSize);
-				height: 100%;
-				background: var(--white);
-				transform: scaleY(0);
-				transform-origin: top;
-			}
 			.selectionButtonContainer {
-				width: calc(20% - var(--menuLineSize));
+				width: 20%;
 				height: 100%;
 			}
 		}
@@ -129,7 +122,6 @@ export default function Navigation() {
 	// Nav lines refs
 	let topNavLine1 = useRef(null)
 	let topNavLine2 = useRef(null)
-	let topNavLine3 = useRef(null)
 	let leftNavLine1 = useRef(null)
 	let leftNavLine2 = useRef(null)
 	// Logo refs
@@ -147,7 +139,6 @@ export default function Navigation() {
 		gsap.to(topNavLine2.current, { duration: 1.8, scaleX: 1, ease: Power2.easeInOut })
 		gsap.to(leftNavLine1.current, { duration: 1.1, scaleY: 1, ease: Power2.easeInOut })
 		gsap.to(leftNavLine2.current, { duration: 1.6, scaleY: 1, ease: Power2.easeInOut })
-		gsap.to(topNavLine3.current, { duration: 0.3, delay: 0.75, scaleY: 1, ease: Power2.easeInOut })
 	}, [])
 
 	return (
@@ -183,7 +174,6 @@ export default function Navigation() {
 					<div className="titleContainer">
 						<AnimatedText text="CHOOSE YOUR DESIGN" type="navTitle" stagger={0.03} delay={600} hover={false}></AnimatedText>
 					</div>
-					<div className="line" ref={topNavLine3}></div>
 					<div className="selectionButtonContainer"></div>
 				</div>
 				<div className="lowerContainer">
