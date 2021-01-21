@@ -84,6 +84,9 @@ const View = styled.div`
 				display: flex;
 				align-items: center;
 				padding-left: 35px;
+				> div {
+					transition: all 0.5s;
+				}
 			}
 			.selectionButtonContainer {
 				width: 20%;
@@ -127,6 +130,8 @@ export default function Navigation() {
 	// Logo refs
 	let logo = useRef(null)
 	let animatedLogo = useRef(null)
+	// Nav title ref
+	let navTitle = useRef(null)
 
 	useEffect(() => {
 		// Play logo animation
@@ -172,7 +177,8 @@ export default function Navigation() {
 						</div>
 					</div>
 					<div className="titleContainer">
-						<AnimatedText text="CHOOSE YOUR DESIGN" type="navTitle" stagger={0.03} delay={600} hover={false}></AnimatedText>
+						<AnimatedText text="CHOOSE" type="navTitle" stagger={0.03} delay={600} hover={false} ref={navTitle}></AnimatedText>
+						<AnimatedText text=" YOUR DESIGN" type="navTitle" stagger={0.03} delay={800} hover={false}></AnimatedText>
 					</div>
 					<div className="selectionButtonContainer"></div>
 				</div>
@@ -184,7 +190,7 @@ export default function Navigation() {
 						</div>
 					</div>
 					<div className="main">
-						<Main></Main>
+						<Main navTitleRef={navTitle}></Main>
 					</div>
 				</div>
 			</div>

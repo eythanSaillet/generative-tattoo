@@ -35,6 +35,7 @@ const Text = styled.div`
 		}
 		.navTitle {
 			height: 32px;
+			/* width: 42px; */
 			padding: 0 5px;
 			font-size: 2.5em;
 			line-height: 32px;
@@ -125,6 +126,21 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => 
 
 	// Unmount animation
 	useImperativeHandle(ref, () => ({
+		replace(text) {
+			gsap.to(spansRefs.current, {
+				duration: 0.5,
+				y: '105%',
+				stagger: stagger,
+				ease: Power3.easeIn,
+				onComplete: function () {
+					for (let i = 0; i < spansRefs.current.length; i++) {
+						spansRefs.current[i].innerHTML = text.charAt(i)
+					}
+					gsap.fromTo(spansRefs.current, { y: '-105%' }, { y: '0%', duration: 1, stagger: stagger, ease: Power3.easeOut })
+				},
+			})
+		},
+
 		remove(delay) {
 			gsap.to(spansRefs.current, {
 				duration: 0.7,

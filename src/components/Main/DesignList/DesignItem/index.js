@@ -30,7 +30,7 @@ const Item = styled.div`
 	}
 `
 
-export default function DesignItem({ index, text, delayFactor, horizontalScrollRef }) {
+export default function DesignItem({ index, text, delayFactor, horizontalScrollRef, navTitleRef }) {
 	let item = useRef(null)
 	let title = useRef(null)
 	let button = useRef(null)
@@ -61,6 +61,7 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 						openItem()
 						title.current.remove()
 						button.current.remove(0.2)
+						navTitleRef.current.replace('CUSTOM')
 					}}
 				>
 					<Button delayFactor={delayFactor} ref={button} />

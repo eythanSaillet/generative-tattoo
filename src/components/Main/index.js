@@ -10,7 +10,7 @@ const Container = styled.div`
 	height: 100%;
 `
 
-export default function Main() {
+export default function Main({ navTitleRef }) {
 	let match = useRouteMatch()
 	return (
 		<Container>
@@ -19,7 +19,7 @@ export default function Main() {
 					<Custom />
 				</Route>
 				<Route path={match.path}>
-					<DesignList />
+					<DesignList navTitleRef={navTitleRef} />
 				</Route>
 			</Switch>
 		</Container>

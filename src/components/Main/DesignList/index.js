@@ -22,14 +22,14 @@ const Container = styled.div`
 	}
 `
 
-export default function DesignList() {
+export default function DesignList({ navTitleRef }) {
 	let horizontalScroll = useRef(null)
 	let lines = useRef([])
 
 	let items = []
 	for (let i = 0; i < config.length; i++) {
 		let index = i < 10 ? `0${i}` : `${i}`
-		items.push(<DesignItem index={index} text={config[i].title} delayFactor={i} key={i} horizontalScrollRef={horizontalScroll}></DesignItem>)
+		items.push(<DesignItem index={index} text={config[i].title} delayFactor={i} key={i} horizontalScrollRef={horizontalScroll} navTitleRef={navTitleRef} />)
 		if (i !== config.length - 1) {
 			items.push(<div className="line" key={i + 0.5} ref={(element) => lines.current.push(element)}></div>)
 		}
