@@ -70,6 +70,7 @@ const View = styled.div`
 				.logo {
 					width: 60%;
 					height: 60%;
+					opacity: 0;
 					transform: rotate(45deg);
 					video {
 						width: 100%;
@@ -132,11 +133,15 @@ export default function Navigation() {
 	let leftNavLine1 = useRef(null)
 	let leftNavLine2 = useRef(null)
 	// Logo refs
+	let logo = useRef(null)
 	let animatedLogo = useRef(null)
 
 	useEffect(() => {
 		// Play logo animation
-		// animatedLogo.current.play()
+		setTimeout(() => {
+			logo.current.style.opacity = 1
+			animatedLogo.current.play()
+		}, 400)
 		// Draw nav lines
 		gsap.to(topNavLine1.current, { duration: 1.3, scaleX: 1, ease: Power2.easeInOut })
 		gsap.to(topNavLine2.current, { duration: 1.8, scaleX: 1, ease: Power2.easeInOut })
@@ -163,7 +168,7 @@ export default function Navigation() {
 							animatedLogo.current.play()
 						}}
 					>
-						<div className="logo">
+						<div className="logo" ref={logo}>
 							<video
 								src={AnimatedLogoSource}
 								ref={animatedLogo}

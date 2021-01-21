@@ -1,6 +1,7 @@
-import gsap from 'gsap/gsap-core'
+import gsap, { Power2 } from 'gsap/gsap-core'
 import React from 'react'
 import Sketch from 'react-p5'
+import { useHistory } from 'react-router-dom'
 
 import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
@@ -22,6 +23,7 @@ export default function P5Sketch({ titleRef }) {
 	let holdValue = { value: 0 }
 	let holdAnimationFinish = false
 	let blackScreenOpacity = { value: 0 }
+	let history = useHistory()
 
 	function preload(p5) {
 		particleFont = p5.loadFont(fontSource)
@@ -78,7 +80,7 @@ export default function P5Sketch({ titleRef }) {
 				_particle.acc.x += (Math.random() - 0.5) * 100
 				_particle.acc.y += (Math.random() - 0.5) * 100
 			}
-			gsap.to(blackScreenOpacity, { duration: 1.5, value: 1, delay: 0.5 })
+			gsap.to(blackScreenOpacity, { duration: 1.4, value: 1, delay: 0.5, ease: Power2.easeIn })
 
 			// Destroy particles
 			// let interval = setInterval(() => {
@@ -127,6 +129,10 @@ export default function P5Sketch({ titleRef }) {
 		if (holdAnimationFinish) {
 			// Draw blackscreen
 			p5.background(`rgba(0%, 0%, 0%, ${blackScreenOpacity.value})`)
+			// Redirect when the animation is finished
+			if (blackScreenOpacity.value === 1) {
+				history.push('/choose')
+			}
 		}
 	}
 
