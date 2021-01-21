@@ -3,44 +3,39 @@ import React from 'react'
 import Sketch from 'react-p5'
 import { useHistory } from 'react-router-dom'
 
-import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
-
 export default function P5Sketch({ titleRef, callToActionRef }) {
-	let particleFont
 	let systemWidth = 550
 	let systemHeight = 150
+
 	let particles = []
 	let particleSize = 2
-	let backgroundColor = 0
 	let sensibleToForces = true
+
+	let backgroundColor = 0
+	let blackScreenOpacity = { value: 0 }
+
 	let mouse = {}
 	let mouseWithLerp = { x: window.innerWidth / 2, y: -100 }
 	let mouseForce = 0.04
 	let mouseForceRadius = 85
-	let isHolding = false
-	let randomForceFactor = 75
 	let mouseFactor = 1
 	let holdValue = { value: 0 }
-	let holdAnimationFinish = false
-	let blackScreenOpacity = { value: 0 }
+	let randomForceFactor = 80
+	let holdAnimationFinished = false
+	let isHolding = false
+
 	let history = useHistory()
 
-	function preload(p5) {
-		particleFont = p5.loadFont(fontSource)
-	}
-
 	const setup = (p5, canvasParentRef) => {
-		// p5.createCanvas(1000, 500).parent(canvasParentRef)
 		p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef)
 		p5.background(backgroundColor)
 		// p5.frameRate(45)
 
-		// Draw the text we are going to use to create the particles
-		p5.textSize(100)
-		p5.textFont(particleFont)
-		p5.textAlign(p5.CENTER, p5.CENTER)
-		p5.noStroke()
-		p5.text('TATTOO', p5.width / 2 - 25, p5.height / 2 - 15)
+		// Text option
+		// p5.textSize(100)
+		// p5.textFont(particleFont)
+		// p5.textAlign(p5.CENTER, p5.CENTER)
+		// p5.noStroke()
 
 		mouse = p5.createVector()
 
@@ -63,50 +58,33 @@ export default function P5Sketch({ titleRef, callToActionRef }) {
 		// p5.stroke(0)
 		// p5.textSize(20)
 		// p5.text('FPS: ' + fps.toFixed(2), 100, 100)
+		// p5.text('Hold: ' + holdValue.value.toFixed(2), 100, 300)
 		// index++
 
-		// Click & Hold
-		if (holdValue.value >= 1 && !holdAnimationFinish) {
-			holdAnimationFinish = true
+		// Handle click holding
+		// Holding is finished
+		if (holdValue.value >= 1 && !holdAnimationFinished) {
+			holdAnimationFinished = true
 			sensibleToForces = false
 
 			// Explosion
-			// for (const _particle of particles) {
-			// 	_particle.acc.x += ((_particle.pos.x - mouse.x) / p5.width) * 150
-			// 	_particle.acc.y += ((_particle.pos.y - mouse.y) / p5.height) * 150
-			// }
 			for (const _particle of particles) {
-				// let randomDir = p5.createVector().random2D()
 				_particle.acc.x += (Math.random() - 0.5) * 100
 				_particle.acc.y += (Math.random() - 0.5) * 100
 			}
+			// Tweak fade out value
 			gsap.to(blackScreenOpacity, { duration: 1.4, value: 1, delay: 0.5, ease: Power2.easeIn })
-
-			// Destroy particles
-			// let interval = setInterval(() => {
-			// 	for (let i = 0; i < 15; i++) {
-			// 		if (particles.length !== 0) {
-			// 			const randomIndex = Math.floor(particles.length * Math.random())
-			// 			particles.splice(randomIndex, 1)
-			// 		} else {
-			// 			clearInterval(interval)
-			// 		}
-			// 	}
-			// }, 10)
 
 			// Cursor explosion
 			gsap.to(holdValue, { duration: 0.3, value: -0.5 })
 
-			// Remove title
+			// Remove title & callToAction
 			titleRef.current.remove(0.2)
 			callToActionRef.current.remove()
-		} else if (isHolding && holdValue.value < 1 && !holdAnimationFinish) {
-			holdValue.value += 0.025
 
-			// Tweak mouse settings to attract particles
-			// mouseFactor = -1
-			// mouseForce = 0.007
-			// mouseForceRadius = 1000
+			// On holding
+		} else if (isHolding && holdValue.value < 1 && !holdAnimationFinished) {
+			holdValue.value += 0.014
 
 			// Apply random force to random particle
 			for (let i = 0; i < 15; i++) {
@@ -114,21 +92,16 @@ export default function P5Sketch({ titleRef, callToActionRef }) {
 				randomParticle.acc.x += (Math.random() - 0.5) * randomForceFactor * holdValue.value
 				randomParticle.acc.y += (Math.random() - 0.5) * randomForceFactor * holdValue.value
 			}
-		} else if (holdValue.value > 0 && !holdAnimationFinish) {
-			holdValue.value -= 0.025
+			// On release
+		} else if (holdValue.value > 0 && !holdAnimationFinished) {
+			holdValue.value -= 0.014
 			holdValue.value = holdValue.value < 0 ? 0 : holdValue.value
-
-			// Reset mouse settings
-			mouseFactor = 1
-			mouseForce = 0.04
-			mouseForceRadius = 85
 		}
-		// p5.text('Hold: ' + holdValue.value.toFixed(2), 100, 300)
 
 		drawCursor(p5)
 
-		if (holdAnimationFinish) {
-			// Draw blackscreen
+		if (holdAnimationFinished) {
+			// Draw black fade out
 			p5.background(`rgba(0%, 0%, 0%, ${blackScreenOpacity.value})`)
 			// Redirect when the animation is finished
 			if (blackScreenOpacity.value === 1) {
@@ -143,18 +116,11 @@ export default function P5Sketch({ titleRef, callToActionRef }) {
 	}
 
 	function createParticles(p5) {
-		// Every *step pixels, create a particle. Its type depends on the pixel color.
+		// Every *step* pixels, create a particle. Its type depends on the pixel color.
 		let step = 8
 		for (let i = p5.width / 2 - systemWidth / 2; i <= p5.width / 2 + systemWidth / 2; i += step) {
 			for (let j = p5.height / 1.25 / 2 - systemHeight / 2; j <= p5.height / 1.25 / 2 + systemHeight / 2; j += step) {
-				let color = p5.get(i, j)
-				let type
-				if (color[0] === backgroundColor) {
-					type = 'free'
-				} else {
-					type = 'fixed'
-				}
-				particles.push(new Particle(p5, { x: i, y: j }, type))
+				particles.push(new Particle(p5, { x: i, y: j }))
 			}
 		}
 	}
@@ -163,14 +129,12 @@ export default function P5Sketch({ titleRef, callToActionRef }) {
 		p5.strokeWeight(particleSize)
 		p5.stroke('black')
 		for (const _particle of particles) {
-			if (_particle.type === 'free') {
-				_particle.applyForce(p5)
-			}
+			_particle.applyForce(p5)
 			_particle.draw(p5)
 		}
 	}
 
-	// Click & Hold
+	// Handle click and hold
 	function pressed() {
 		isHolding = true
 	}
@@ -208,8 +172,6 @@ export default function P5Sketch({ titleRef, callToActionRef }) {
 				x: 0,
 				y: 0,
 			}
-
-			this.type = type
 
 			this.maxSpeed = 10
 			this.maxForce = 0.5
@@ -310,5 +272,5 @@ export default function P5Sketch({ titleRef, callToActionRef }) {
 		}
 	}
 
-	return <Sketch preload={preload} setup={setup} draw={draw} mousePressed={pressed} mouseReleased={released} />
+	return <Sketch setup={setup} draw={draw} mousePressed={pressed} mouseReleased={released} />
 }
