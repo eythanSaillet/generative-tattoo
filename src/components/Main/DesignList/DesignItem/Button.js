@@ -90,7 +90,7 @@ const Button = forwardRef(({ delayFactor }, ref) => {
 	useImperativeHandle(ref, () => ({
 		remove(delay) {
 			// Remove the button
-			gsap.to(displayEffect.current, { duration: 3, scaleY: 15, rotate: 0, delay: 0.5 + delay })
+			gsap.to(displayEffect.current, { duration: 2, scaleY: 15, rotate: 0, delay: 0.5 + delay })
 
 			// Remove the arrows
 			gsap.to(arrowTop.current, { duration: 1, scaleX: 0, delay: delay, ease: Power1.easeIn })

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
+import { Route, Switch } from 'react-router'
 
 import Main from './Main'
 import AnimatedText from './utils/AnimatedText'
@@ -177,8 +178,15 @@ export default function Navigation() {
 						</div>
 					</div>
 					<div className="titleContainer">
-						<AnimatedText text="CHOOSE" type="navTitle" stagger={0.03} delay={600} hover={false} ref={navTitle}></AnimatedText>
-						<AnimatedText text=" YOUR DESIGN" type="navTitle" stagger={0.03} delay={800} hover={false}></AnimatedText>
+						<Switch>
+							<Route path="/choose/:design">
+								<AnimatedText text="CUSTOM" type="navTitle" stagger={0.03} delay={600} hover={false} ref={navTitle}></AnimatedText>
+							</Route>
+							<Route path="/choose">
+								<AnimatedText text="CHOOSE" type="navTitle" stagger={0.03} delay={600} hover={false} ref={navTitle}></AnimatedText>
+							</Route>
+						</Switch>
+						<AnimatedText text=" YOUR DESIGN" type="navTitle" stagger={0.03} delay={830} hover={false}></AnimatedText>
 					</div>
 					<div className="selectionButtonContainer"></div>
 				</div>

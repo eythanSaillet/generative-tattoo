@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import gsap, { Power3 } from 'gsap'
+import { useHistory } from 'react-router-dom'
 
 import Title from './Title'
 import Button from './Button'
@@ -35,6 +36,8 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 	let title = useRef(null)
 	let button = useRef(null)
 
+	let history = useHistory()
+
 	const openItem = () => {
 		// Disable scroll
 		horizontalScrollRef.current.hScrollParent.style.pointerEvents = 'none'
@@ -62,6 +65,10 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 						title.current.remove()
 						button.current.remove(0.2)
 						navTitleRef.current.replace('CUSTOM')
+						setTimeout(() => {
+							let designName = text.join('').toLowerCase()
+							history.push(`choose/${designName}`)
+						}, 2000)
 					}}
 				>
 					<Button delayFactor={delayFactor} ref={button} />
