@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import fontSource from '../../assets/fonts/made-outer-sans/made-outer-sans-medium.otf'
 
-export default function P5Sketch({ titleRef }) {
+export default function P5Sketch({ titleRef, callToActionRef }) {
 	let particleFont
 	let systemWidth = 550
 	let systemHeight = 150
@@ -99,6 +99,7 @@ export default function P5Sketch({ titleRef }) {
 
 			// Remove title
 			titleRef.current.remove(0.2)
+			callToActionRef.current.remove()
 		} else if (isHolding && holdValue.value < 1 && !holdAnimationFinish) {
 			holdValue.value += 0.025
 

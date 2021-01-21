@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Sketch from './Sketch'
 import Title from './Title'
-// import Cursor from './Cursor'
+import CallToAction from './CallToAction'
 
 const Container = styled.div`
 	position: relative;
@@ -14,12 +14,13 @@ const Container = styled.div`
 
 export default function SplashScreen() {
 	let title = useRef(null)
+	let callToAction = useRef(null)
 
 	return (
 		<Container>
-			<Sketch titleRef={title} />
+			<Sketch titleRef={title} callToActionRef={callToAction} />
 			<Title ref={title} />
-			{/* <Cursor holdValue={holdValue}></Cursor> */}
+			<CallToAction ref={callToAction} />
 		</Container>
 	)
 }
