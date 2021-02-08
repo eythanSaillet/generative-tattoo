@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 
 import AnimatedText from '../../../utils/AnimatedText'
@@ -52,25 +52,49 @@ const Container = styled.div`
 	}
 `
 
-export default function Trackbar({ text }) {
+export default function Trackbar({ text, range, decimals, initialValue }) {
 	const [position, setPosition] = useState(0)
 	const [isClicked, setIsClicked] = useState(false)
 
 	const barRef = useRef(null)
+	const trackerIndexRef = useRef(null)
 
 	window.addEventListener('mouseup', () => {
 		setIsClicked(false)
 	})
 
+	const updateTracker = (e) => {
+		// Calculate the offset
+		const targetRect = barRef.current.getBoundingClientRect()
+		let x = e.clientX - targetRect.left - 5
+		if (x < 0) x = 0
+		if (x > targetRect.width - 10) x = targetRect.width - 10
+
+		// Update tracker index
+		const percent = x / (targetRect.width - 10)
+		const value = range[0] + percent * (range[1] - range[0])
+		trackerIndexRef.current.innerHTML = value.toFixed(decimals)
+
+		// Translate the tracker
+		setPosition(x)
+	}
+
+	useEffect(() => {
+		// Calculate the offset
+		const targetRect = barRef.current.getBoundingClientRect()
+		const percent = (initialValue - range[0]) / (range[1] - range[0])
+		const x = percent * (targetRect.width - 10)
+
+		setPosition(x)
+
+		trackerIndexRef.current.innerHTML = initialValue
+	}, [range, initialValue])
+
 	return (
 		<Container
 			onMouseMove={(e) => {
 				if (isClicked) {
-					const targetRect = barRef.current.getBoundingClientRect()
-					let x = e.clientX - targetRect.left - 5
-					if (x < 0) x = 0
-					if (x > targetRect.width - 10) x = targetRect.width - 10
-					setPosition(x)
+					updateTracker(e)
 				}
 			}}
 		>
@@ -81,9 +105,7 @@ export default function Trackbar({ text }) {
 					onMouseDown={(e) => {
 						setIsClicked(true)
 
-						const targetRect = e.target.getBoundingClientRect()
-						const x = e.clientX - targetRect.left - 5
-						setPosition(x)
+						updateTracker(e)
 					}}
 					onMouseUp={() => {
 						setIsClicked(false)
@@ -92,7 +114,7 @@ export default function Trackbar({ text }) {
 				>
 					<div className="bar">
 						<div className="tracker" style={{ left: position }}>
-							<span>{Math.round(position)}</span>
+							<span ref={trackerIndexRef}></span>
 						</div>
 					</div>
 				</div>
