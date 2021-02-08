@@ -63,6 +63,14 @@ const Text = styled.div`
 			line-height: 11px;
 			padding: 0 0.5px;
 		}
+		.trackbarText {
+			height: 11px;
+			color: var(--white);
+			font-family: 'Made Outer Sans Light';
+			font-size: 0.8em;
+			line-height: 11px;
+			padding: 0 0.3px;
+		}
 	}
 	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};
 `
