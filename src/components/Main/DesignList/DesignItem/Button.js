@@ -86,8 +86,8 @@ const Button = forwardRef(({ delayFactor }, ref) => {
 		gsap.to(arrowBottom.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 })
 	}, [delayFactor])
 
-	// Unmount animation
 	useImperativeHandle(ref, () => ({
+		// Unmount animation
 		remove(delay) {
 			// Remove the button
 			gsap.to(displayEffect.current, { duration: 2, scaleY: 15, rotate: 0, delay: 0.5 + delay })

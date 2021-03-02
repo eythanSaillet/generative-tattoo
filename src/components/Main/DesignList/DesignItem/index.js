@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import gsap, { Power3 } from 'gsap'
 import { useHistory } from 'react-router-dom'
 
+import Demo from './Demo'
 import Title from './Title'
 import Button from './Button'
 
@@ -10,6 +11,9 @@ const Item = styled.div`
 	position: relative;
 	width: calc(100vh - var(--menuSize) - var(--containerMargin));
 	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	.bottomContainer {
 		position: absolute;
 		left: 10%;
@@ -35,6 +39,7 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 	let item = useRef(null)
 	let title = useRef(null)
 	let button = useRef(null)
+	let demo = useRef(null)
 
 	let history = useHistory()
 
@@ -56,7 +61,16 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 		gsap.to(horizontalScrollRef.current.hScrollParent, { duration: 1.5, x: scrollValue, ease: Power3.easeInOut })
 	}
 	return (
-		<Item ref={item}>
+		<Item
+			ref={item}
+			onMouseEnter={() => {
+				demo.current.play()
+			}}
+			onMouseLeave={() => {
+				demo.current.pause()
+			}}
+		>
+			<Demo ref={demo} />
 			<div className="bottomContainer">
 				<Title index={index} text={text} delayFactor={delayFactor} ref={title}></Title>
 				<div
