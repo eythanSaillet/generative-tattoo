@@ -1,7 +1,10 @@
 import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 
+import DisturbedLinesVideoSource from '../../../../assets/demoVideo/disturbedLines.webm'
 import NoiseStainVideoSource from '../../../../assets/demoVideo/noiseStain.webm'
+
+const videoSources = [DisturbedLinesVideoSource, NoiseStainVideoSource, DisturbedLinesVideoSource]
 
 const Container = styled.div`
 	width: 60%;
@@ -11,7 +14,7 @@ const Container = styled.div`
 	}
 `
 
-const Demo = forwardRef((props, ref) => {
+const Demo = forwardRef(({ index }, ref) => {
 	let video = useRef(null)
 
 	useImperativeHandle(ref, () => ({
@@ -22,11 +25,12 @@ const Demo = forwardRef((props, ref) => {
 			video.current.pause()
 		},
 	}))
+	console.log(index, videoSources[parseInt(index)])
 
 	return (
 		<Container>
-			<video ref={video}>
-				<source src={NoiseStainVideoSource} type="video/mp4" />
+			<video ref={video} loop>
+				<source src={videoSources[parseInt(index)]} type="video/webm" />
 			</video>
 		</Container>
 	)

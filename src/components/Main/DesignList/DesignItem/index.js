@@ -70,7 +70,7 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 				demo.current.pause()
 			}}
 		>
-			<Demo ref={demo} />
+			<Demo ref={demo} index={index} />
 			<div className="bottomContainer">
 				<Title index={index} text={text} delayFactor={delayFactor} ref={title}></Title>
 				<div
