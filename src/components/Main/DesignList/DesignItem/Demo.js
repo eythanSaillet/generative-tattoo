@@ -29,8 +29,14 @@ const Demo = forwardRef(({ index }, ref) => {
 
 	return (
 		<Container>
-			<video ref={video} loop>
-				<source src={videoSources[parseInt(index)]} type="video/webm" />
+			<video
+				ref={video}
+				loop
+				onPause={() => {
+					video.current.currentTime -= 0.001
+				}}
+			>
+				<source src={videoSources[parseInt(index)]} type="video/mp4" />
 			</video>
 		</Container>
 	)
