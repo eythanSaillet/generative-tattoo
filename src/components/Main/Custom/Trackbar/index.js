@@ -5,7 +5,7 @@ import AnimatedText from '../../../utils/AnimatedText'
 
 const Container = styled.div`
 	width: 100%;
-	height: 65px;
+	height: 68px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -13,12 +13,12 @@ const Container = styled.div`
 	user-select: none;
 	.secondContainer {
 		width: 80%;
-		height: 47px;
+		height: 46px;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		.barContainer {
-			height: 20px;
+			height: 15px;
 			width: 100%;
 			display: flex;
 			align-items: center;
@@ -27,7 +27,7 @@ const Container = styled.div`
 				position: relative;
 				height: 2px;
 				width: 100%;
-				background: var(--white);
+				background: var(--darkGrey);
 				.tracker {
 					width: 10px;
 					height: 10px;
