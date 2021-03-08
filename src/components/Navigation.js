@@ -167,6 +167,7 @@ export default function Navigation() {
 					>
 						<div className="logo" ref={logo}>
 							<video
+								muted
 								src={AnimatedLogoSource}
 								ref={animatedLogo}
 								onTimeUpdate={() => {

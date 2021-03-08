@@ -70,19 +70,24 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 				demo.current.pause()
 			}}
 		>
-			<Demo ref={demo} index={index} />
+			<Demo index={index} ref={demo} />
 			<div className="bottomContainer">
 				<Title index={index} text={text} delayFactor={delayFactor} ref={title}></Title>
 				<div
 					onClick={() => {
-						openItem()
-						title.current.remove()
-						button.current.remove(0.2)
-						navTitleRef.current.replace('CUSTOM')
+						// Trigger demo video transition out
+						demo.current.out()
+
 						setTimeout(() => {
-							let designName = text.join('').toLowerCase()
-							history.push(`choose/${designName}`)
-						}, 2000)
+							openItem()
+							title.current.remove()
+							button.current.remove(0.2)
+							navTitleRef.current.replace('CUSTOM')
+							setTimeout(() => {
+								let designName = text.join('').toLowerCase()
+								history.push(`choose/${designName}`)
+							}, 2000)
+						}, 600)
 					}}
 				>
 					<Button delayFactor={delayFactor} ref={button} />
