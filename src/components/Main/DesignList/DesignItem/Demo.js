@@ -2,8 +2,8 @@ import React, { useRef, useState, forwardRef, useImperativeHandle, useEffect } f
 import styled from 'styled-components'
 
 import DisturbedLinesVideoSource from '../../../../assets/demoVideo/disturbedLines.webm'
-import DisturbedLinesTransitionInVideoSource from '../../../../assets/demoVideo/disturbedLinesTransitionIn.webm'
 import DisturbedLinesTransitionOutVideoSource from '../../../../assets/demoVideo/disturbedLinesTransitionOut.webm'
+import DisturbedLinesTransitionInVideoSource from '../../../../assets/demoVideo/disturbedLinesTransitionIn.webm'
 
 // import NoiseStainVideoSource from '../../../../assets/demoVideo/noiseStain.webm'
 
