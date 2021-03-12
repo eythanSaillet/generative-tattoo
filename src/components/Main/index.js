@@ -16,7 +16,7 @@ export default function Main({ navTitleRef }) {
 		<Container>
 			<Switch>
 				<Route path={`${match.path}/:design`}>
-					<Custom />
+					<Custom navTitleRef={navTitleRef} />
 				</Route>
 				<Route path={match.path}>
 					<DesignList navTitleRef={navTitleRef} />

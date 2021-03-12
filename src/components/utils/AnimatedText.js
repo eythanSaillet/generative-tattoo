@@ -5,8 +5,8 @@ import gsap, { Power3, Power2 } from 'gsap'
 const Text = styled.div`
 	display: flex;
 	align-items: center;
-	padding: ${(props) => (props.type === 'navLink' ? '12px' : '0')};
-	cursor: ${(props) => (props.type === 'navLink' ? 'pointer' : 'initial')};
+	padding: ${(props) => (props.type === 'navLink' || props.type === 'link' ? '12px' : '0')};
+	cursor: ${(props) => (props.type === 'navLink' || props.type === 'link' ? 'pointer' : 'initial')};
 	.textContainer {
 		display: flex;
 		overflow: hidden;
@@ -40,7 +40,8 @@ const Text = styled.div`
 			font-size: 2.5em;
 			line-height: 32px;
 		}
-		.navLink {
+		.navLink,
+		.link {
 			height: 11px;
 			color: var(--grey);
 			font-size: 0.8em;
@@ -77,12 +78,12 @@ const Text = styled.div`
 
 const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => {
 	let spans = []
-	let spansRefs = useRef([])
+	let spansRefs = useRef(new Array(text.length))
 	let isAnimated = useRef(true)
 
 	for (let i = 0; i < text.length; i++) {
 		spans.push(
-			<span className={type} key={i} ref={(element) => spansRefs.current.push(element)}>
+			<span className={type} key={i} ref={(element) => (spansRefs.current[i] = element)}>
 				{text[i]}
 			</span>
 		)
@@ -99,7 +100,7 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => 
 				},
 			})
 		}, delay)
-	}, [stagger, delay, isAnimated])
+	}, [stagger, delay])
 
 	// Hover animation
 	let hoverAnim = () => {

@@ -1,16 +1,24 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import gsap, { Power1 } from 'gsap'
+import { useHistory } from 'react-router-dom'
 
 import Trackbar from './Trackbar/index'
+import AnimatedText from '../../utils/AnimatedText'
 
 const Container = styled.div`
 	width: 100%;
 	height: 100%;
 	display: flex;
 	.leftContainer {
+		position: relative;
 		width: 75%;
 		height: 100%;
+		.returnButton {
+			position: absolute;
+			top: 35px;
+			left: 40px;
+		}
 	}
 	.line {
 		width: var(--menuLineSize);
@@ -29,8 +37,11 @@ const Container = styled.div`
 	}
 `
 
-export default function Custom() {
+export default function Custom({ navTitleRef }) {
 	let line = useRef(null)
+	let returnButton = useRef(null)
+
+	let history = useHistory()
 
 	useEffect(() => {
 		gsap.to(line.current, { duration: 0.7, scaleY: 1, ease: Power1.easeOut, delay: 1.2 })
@@ -38,7 +49,21 @@ export default function Custom() {
 
 	return (
 		<Container>
-			<div className="leftContainer"></div>
+			<div className="leftContainer">
+				<div
+					className="returnButton"
+					onClick={() => {
+						navTitleRef.current.replace('CHOOSE')
+						returnButton.current.remove()
+						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: 0.3 })
+						setTimeout(() => {
+							history.goBack()
+						}, 2000)
+					}}
+				>
+					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={650} hover={true} ref={returnButton}></AnimatedText>
+				</div>
+			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
 				<Trackbar text="Width" range={[2, 11]} decimals={2} initialValue={9.25} />
