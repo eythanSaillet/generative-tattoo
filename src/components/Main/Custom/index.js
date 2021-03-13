@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import Trackbar from './Trackbar/index'
 import AnimatedText from '../../utils/AnimatedText'
+import Sketch from './Sketch'
 
 const Container = styled.div`
 	width: 100%;
@@ -63,6 +64,7 @@ export default function Custom({ navTitleRef }) {
 				>
 					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={650} hover={true} ref={returnButton}></AnimatedText>
 				</div>
+				<Sketch />
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
