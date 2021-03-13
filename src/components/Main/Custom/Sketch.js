@@ -8,21 +8,23 @@ const Container = styled.div`
 	.react-p5 {
 		width: 100%;
 		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 `
 
 export default (props) => {
-	let x = 0
-	let y = 100
+	let system
+
 	const setup = (p5, canvasParentRef) => {
-		p5.createCanvas(canvasParentRef.clientWidth, canvasParentRef.clientHeight).parent(canvasParentRef)
+		p5.createCanvas(500, 200).parent(canvasParentRef)
+
+		system = require('./sketchSystems/disturbedLinesSystem').default
+		system.init(p5)
 	}
 
-	const draw = (p5) => {
-		p5.background(5)
-		p5.ellipse(x, y, 70, 70)
-		x++
-	}
+	const draw = (p5) => {}
 
 	return (
 		<Container>
