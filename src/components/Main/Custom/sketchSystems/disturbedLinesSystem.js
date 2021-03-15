@@ -114,7 +114,7 @@ let disturbedLinesSystem = {
 		p5.strokeWeight(this.lineWeight)
 
 		let i = this.lines.length - 1
-		let step = 0
+		// let step = 0
 		let drawLineInterval = () => {
 			if (i >= 0) {
 				setTimeout(() => {
@@ -136,7 +136,7 @@ let disturbedLinesSystem = {
 					this.origin.x += this.stepBetweenLines
 					this.noiseFactor -= this.factorIncrementation
 					i--
-					step++
+					// step++
 					drawLineInterval()
 				}, this.timeInterval)
 			} else {

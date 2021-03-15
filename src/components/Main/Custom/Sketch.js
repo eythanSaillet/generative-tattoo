@@ -14,7 +14,7 @@ const Container = styled.div`
 	}
 `
 
-export default (props) => {
+export default function Sketch(props) {
 	let system
 
 	const setup = (p5, canvasParentRef) => {

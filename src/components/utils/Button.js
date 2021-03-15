@@ -38,7 +38,7 @@ export default function Button({ text, delay }) {
 
 	useEffect(() => {
 		gsap.to(displayEffect.current, { duration: 1.5, scaleY: 0, rotate: 135, ease: Power3.easeInOut, delay: delay })
-	}, [])
+	}, [delay])
 
 	return (
 		<Container>
