@@ -64,6 +64,12 @@ const Container = styled.div`
 			visibility: hidden !important;
 		}
 	}
+	// Active
+	&:active {
+		.arrow {
+			background: var(--white);
+		}
+	}
 `
 
 const Button = forwardRef(({ delayFactor }, ref) => {

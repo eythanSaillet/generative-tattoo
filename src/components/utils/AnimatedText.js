@@ -58,7 +58,6 @@ const Text = styled.div`
 		}
 		.designItemTitleText {
 			height: 11px;
-			color: var(--white);
 			font-family: 'Made Outer Sans Light';
 			font-size: 0.8em;
 			line-height: 11px;
@@ -66,11 +65,17 @@ const Text = styled.div`
 		}
 		.trackbarText {
 			height: 13px;
-			color: var(--white);
 			font-family: 'Made Outer Sans Light';
 			font-size: 0.8em;
 			line-height: 11px;
 			padding: 0 0.3px;
+		}
+		.button {
+			height: 10px;
+			font-family: 'Made Outer Sans Regular';
+			font-size: 0.8em;
+			letter-spacing: 3px;
+			line-height: 11px;
 		}
 	}
 	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};

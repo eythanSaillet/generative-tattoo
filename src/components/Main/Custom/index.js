@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import Trackbar from './Trackbar/index'
 import AnimatedText from '../../utils/AnimatedText'
 import Sketch from './Sketch'
+import Button from '../../utils/Button'
 
 const Container = styled.div`
 	width: 100%;
@@ -62,7 +63,7 @@ export default function Custom({ navTitleRef }) {
 						}, 2000)
 					}}
 				>
-					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={650} hover={true} ref={returnButton}></AnimatedText>
+					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={650} hover={true} ref={returnButton} />
 				</div>
 				<Sketch />
 			</div>
@@ -73,6 +74,7 @@ export default function Custom({ navTitleRef }) {
 				<Trackbar text="Factor" range={[2, 50]} decimals={1} initialValue={10.9} />
 				<Trackbar text="Noise" range={[1, 4]} decimals={2} initialValue={3.76} />
 				<Trackbar text="Perception" range={[0, 1]} decimals={3} initialValue={0.232} />
+				<Button text="GENERATE" delay={1} />
 			</div>
 		</Container>
 	)

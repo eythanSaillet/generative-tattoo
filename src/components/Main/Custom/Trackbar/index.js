@@ -11,6 +11,7 @@ const Container = styled.div`
 	justify-content: flex-start;
 	align-items: center;
 	user-select: none;
+	z-index: 20;
 	.secondContainer {
 		width: 80%;
 		height: 46px;
