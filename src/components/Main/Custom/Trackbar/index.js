@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
+import gsap, { Power2 } from 'gsap'
 
 import AnimatedText from '../../../utils/AnimatedText'
 
@@ -18,17 +19,23 @@ const Container = styled.div`
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		.barContainer {
+		.barContainerOut {
 			height: 15px;
 			width: 100%;
 			display: flex;
 			align-items: center;
 			cursor: pointer;
-			.bar {
+			.barContainerIn {
 				position: relative;
 				height: 2px;
 				width: 100%;
-				background: var(--darkGrey);
+				.bar {
+					width: 100%;
+					height: 100%;
+					background: var(--darkGrey);
+					transform-origin: left;
+					transform: scaleX(0);
+				}
 				.tracker {
 					width: 10px;
 					height: 10px;
@@ -53,12 +60,14 @@ const Container = styled.div`
 	}
 `
 
-export default function Trackbar({ text, range, decimals, initialValue }) {
+export default function Trackbar({ text, range, decimals, initialValue, delay }) {
 	const [position, setPosition] = useState(0)
 	const [isClicked, setIsClicked] = useState(false)
 
-	const barRef = useRef(null)
-	const trackerIndexRef = useRef(null)
+	const barContainerOut = useRef(null)
+	const tracker = useRef(null)
+	const trackerIndex = useRef(null)
+	const bar = useRef(null)
 
 	window.addEventListener('mouseup', () => {
 		setIsClicked(false)
@@ -66,7 +75,7 @@ export default function Trackbar({ text, range, decimals, initialValue }) {
 
 	const updateTracker = (e) => {
 		// Calculate the offset
-		const targetRect = barRef.current.getBoundingClientRect()
+		const targetRect = barContainerOut.current.getBoundingClientRect()
 		let x = e.clientX - targetRect.left - 5
 		if (x < 0) x = 0
 		if (x > targetRect.width - 10) x = targetRect.width - 10
@@ -74,7 +83,7 @@ export default function Trackbar({ text, range, decimals, initialValue }) {
 		// Update tracker index
 		const percent = x / (targetRect.width - 10)
 		const value = range[0] + percent * (range[1] - range[0])
-		trackerIndexRef.current.innerHTML = value.toFixed(decimals)
+		trackerIndex.current.innerHTML = value.toFixed(decimals)
 
 		// Translate the tracker
 		setPosition(x)
@@ -82,13 +91,27 @@ export default function Trackbar({ text, range, decimals, initialValue }) {
 
 	useEffect(() => {
 		// Calculate the offset
-		const targetRect = barRef.current.getBoundingClientRect()
+		const targetRect = barContainerOut.current.getBoundingClientRect()
 		const percent = (initialValue - range[0]) / (range[1] - range[0])
 		const x = percent * (targetRect.width - 10)
 
-		setPosition(x)
+		// setPosition(x)
 
-		trackerIndexRef.current.innerHTML = initialValue
+		// Display animation
+		gsap.to(bar.current, { duration: 1, scaleX: 1, delay: delay })
+		gsap.to(tracker.current, { duration: 1, left: x, delay: delay, ease: Power2.easeInOut })
+
+		gsap.from(tracker.current, { duration: 0.5, opacity: 0, delay: delay, ease: Power2.easeIn })
+		let trackbarIndex = { value: 0 }
+		gsap.to(trackbarIndex, {
+			duration: 1,
+			value: initialValue,
+			delay: delay,
+			ease: Power2.easeInOut,
+			onUpdate: () => {
+				trackerIndex.current.innerHTML = trackbarIndex.value.toFixed(decimals)
+			},
+		})
 	}, [range, initialValue])
 
 	return (
@@ -100,9 +123,9 @@ export default function Trackbar({ text, range, decimals, initialValue }) {
 			}}
 		>
 			<div className="secondContainer">
-				<AnimatedText text={text} type="trackbarText" stagger={0.03} delay={0} hover={false}></AnimatedText>
+				<AnimatedText text={text} type="trackbarText" stagger={0.03} delay={delay * 1000} hover={false}></AnimatedText>
 				<div
-					className="barContainer"
+					className="barContainerOut"
 					onMouseDown={(e) => {
 						setIsClicked(true)
 
@@ -111,11 +134,12 @@ export default function Trackbar({ text, range, decimals, initialValue }) {
 					onMouseUp={() => {
 						setIsClicked(false)
 					}}
-					ref={barRef}
+					ref={barContainerOut}
 				>
-					<div className="bar">
-						<div className="tracker" style={{ left: position }}>
-							<span ref={trackerIndexRef}></span>
+					<div className="barContainerIn">
+						<div className="bar" ref={bar} />
+						<div className="tracker" style={{ left: position }} ref={tracker}>
+							<span ref={trackerIndex}>0</span>
 						</div>
 					</div>
 				</div>

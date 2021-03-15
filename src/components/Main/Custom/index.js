@@ -39,15 +39,15 @@ const Container = styled.div`
 	}
 `
 
-export default function Custom({ navTitleRef }) {
+export default function Custom({ navTitleRef, delay }) {
 	let line = useRef(null)
 	let returnButton = useRef(null)
 
 	let history = useHistory()
 
 	useEffect(() => {
-		gsap.to(line.current, { duration: 0.7, scaleY: 1, ease: Power1.easeOut, delay: 1.2 })
-	}, [])
+		gsap.to(line.current, { duration: 0.7, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
+	}, [delay])
 
 	return (
 		<Container>
@@ -57,24 +57,24 @@ export default function Custom({ navTitleRef }) {
 					onClick={() => {
 						navTitleRef.current.replace('CHOOSE')
 						returnButton.current.remove()
-						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: 0.3 })
+						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: delay + 0.3 })
 						setTimeout(() => {
 							history.goBack()
 						}, 2000)
 					}}
 				>
-					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={650} hover={true} ref={returnButton} />
+					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 650} hover={true} ref={returnButton} />
 				</div>
 				<Sketch />
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
-				<Trackbar text="Width" range={[2, 11]} decimals={2} initialValue={9.25} />
-				<Trackbar text="Height" range={[2, 100]} decimals={0} initialValue={6} />
-				<Trackbar text="Factor" range={[2, 50]} decimals={1} initialValue={10.9} />
-				<Trackbar text="Noise" range={[1, 4]} decimals={2} initialValue={3.76} />
-				<Trackbar text="Perception" range={[0, 1]} decimals={3} initialValue={0.232} />
-				<Button text="GENERATE" delay={1} />
+				<Trackbar text="Width" range={[2, 11]} decimals={2} initialValue={9.25} delay={delay + 1.5} />
+				<Trackbar text="Height" range={[2, 100]} decimals={0} initialValue={6} delay={delay + 1.7} />
+				<Trackbar text="Factor" range={[2, 50]} decimals={1} initialValue={10.9} delay={delay + 1.9} />
+				<Trackbar text="Noise" range={[1, 4]} decimals={2} initialValue={3.76} delay={delay + 2.1} />
+				<Trackbar text="Perception" range={[0, 1]} decimals={3} initialValue={0.232} delay={delay + 2.3} />
+				<Button text="GENERATE" delay={delay + 1} />
 			</div>
 		</Container>
 	)
