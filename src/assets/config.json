@@ -1,11 +1,17 @@
 [
 	{
-		"title": ["Disturbed", "Lines"]
+		"index": "01",
+		"title": ["Disturbed", "Lines"],
+		"slug": "disturbedlines"
 	},
 	{
-		"title": ["Noise", "Stain"]
+		"index": "02",
+		"title": ["Noise", "Stain"],
+		"slug": "noisestain"
 	},
 	{
-		"title": ["Mad", "Wire"]
+		"index": "03",
+		"title": ["Mad", "Wire"],
+		"slug": "madwire"
 	}
 ]

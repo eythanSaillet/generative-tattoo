@@ -3,10 +3,12 @@ import styled from 'styled-components'
 import gsap, { Power1 } from 'gsap'
 import { useHistory } from 'react-router-dom'
 
+import config from '../../../assets/config.json'
 import Trackbar from './Trackbar/index'
 import AnimatedText from '../../utils/AnimatedText'
 import Sketch from './Sketch'
 import Button from '../../utils/Button'
+import DesignTitle from '../../utils/DesignTitle'
 
 const Container = styled.div`
 	width: 100%;
@@ -20,6 +22,11 @@ const Container = styled.div`
 			position: absolute;
 			top: 35px;
 			left: 40px;
+		}
+		.designTitleContainer {
+			position: absolute;
+			bottom: 54px;
+			left: 60px;
 		}
 	}
 	.line {
@@ -40,11 +47,19 @@ const Container = styled.div`
 `
 
 export default function Custom({ navTitleRef, delay }) {
-	let line = useRef(null)
-	let returnButton = useRef(null)
+	const line = useRef(null)
+	const returnButton = useRef(null)
 
-	let history = useHistory()
+	const history = useHistory()
 
+	// Get design config
+	let design
+	const slug = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1)
+	for (const _design of config) {
+		if (_design.slug === slug) {
+			design = _design
+		}
+	}
 	useEffect(() => {
 		gsap.to(line.current, { duration: 0.7, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
 	}, [delay])
@@ -66,6 +81,9 @@ export default function Custom({ navTitleRef, delay }) {
 					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 650} hover={true} ref={returnButton} />
 				</div>
 				<Sketch />
+				<div className="designTitleContainer">
+					<DesignTitle index={design.index} text={design.title} displayAnim={false} />
+				</div>
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">

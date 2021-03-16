@@ -81,7 +81,7 @@ const Text = styled.div`
 	transform: ${(props) => (props.type === 'navLink' ? 'rotate(-90deg)' : 'rotate(0)')};
 `
 
-const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => {
+const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAnim = true }, ref) => {
 	let spans = []
 	let spansRefs = useRef(new Array(text.length))
 	let isAnimated = useRef(true)
@@ -94,18 +94,27 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover }, ref) => 
 		)
 	}
 	useEffect(() => {
-		setTimeout(() => {
-			gsap.to(spansRefs.current, {
-				duration: 0.7,
-				y: '0%',
-				stagger: stagger,
-				ease: Power3.easeOut,
-				onComplete: () => {
-					isAnimated.current = false
-				},
-			})
-		}, delay)
-	}, [stagger, delay])
+		// Display it instantly if displayAnim = false
+		// and animate it if displayAnim = true
+		if (!displayAnim) {
+			for (const _span of spansRefs.current) {
+				_span.style.transform = 'translate(0%)'
+			}
+			isAnimated.current = false
+		} else {
+			setTimeout(() => {
+				gsap.to(spansRefs.current, {
+					duration: 0.7,
+					y: '0%',
+					stagger: stagger,
+					ease: Power3.easeOut,
+					onComplete: () => {
+						isAnimated.current = false
+					},
+				})
+			}, delay)
+		}
+	}, [stagger, delay, displayAnim])
 
 	// Hover animation
 	let hoverAnim = () => {

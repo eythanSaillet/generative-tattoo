@@ -1,7 +1,7 @@
 import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 
-import AnimatedText from '../../../utils/AnimatedText'
+import AnimatedText from './AnimatedText'
 
 const Container = styled.div`
 	height: 47px;
@@ -13,7 +13,7 @@ const Container = styled.div`
 	}
 `
 
-const Title = forwardRef(({ index, text, delayFactor }, ref) => {
+const Title = forwardRef(({ index, text, delayFactor = 1, displayAnim }, ref) => {
 	let designItemTitleIndex = useRef(null)
 	let designItemTitleText1 = useRef(null)
 	let designItemTitleText2 = useRef(null)
@@ -29,9 +29,9 @@ const Title = forwardRef(({ index, text, delayFactor }, ref) => {
 
 	return (
 		<Container>
-			<AnimatedText text={index} type="designItemTitleIndex" stagger={-0.05} delay={1600 + delayFactor * 750} ref={designItemTitleIndex}></AnimatedText>
-			<AnimatedText text={text[0]} type="designItemTitleText" stagger={-0.05} delay={1300 + delayFactor * 750} ref={designItemTitleText1}></AnimatedText>
-			<AnimatedText text={text[1]} type="designItemTitleText" stagger={-0.05} delay={1200 + delayFactor * 750} ref={designItemTitleText2}></AnimatedText>
+			<AnimatedText text={index} type="designItemTitleIndex" stagger={-0.05} delay={1600 + delayFactor * 750} displayAnim={displayAnim} ref={designItemTitleIndex}></AnimatedText>
+			<AnimatedText text={text[0]} type="designItemTitleText" stagger={-0.05} delay={1300 + delayFactor * 750} displayAnim={displayAnim} ref={designItemTitleText1}></AnimatedText>
+			<AnimatedText text={text[1]} type="designItemTitleText" stagger={-0.05} delay={1200 + delayFactor * 750} displayAnim={displayAnim} ref={designItemTitleText2}></AnimatedText>
 		</Container>
 	)
 })

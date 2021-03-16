@@ -4,7 +4,7 @@ import gsap, { Power3 } from 'gsap'
 import { useHistory } from 'react-router-dom'
 
 import Demo from './Demo'
-import Title from './Title'
+import DesignTitle from '../../../utils/DesignTitle'
 import Button from './Button'
 
 const Item = styled.div`
@@ -16,9 +16,9 @@ const Item = styled.div`
 	align-items: center;
 	.bottomContainer {
 		position: absolute;
-		left: 10%;
-		right: 10%;
-		bottom: 9%;
+		left: 60px;
+		right: 60px;
+		bottom: 54px;
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
@@ -70,9 +70,9 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 				demo.current.pause()
 			}}
 		>
-			<Demo index={index} ref={demo} />
+			<Demo index={parseInt(index) - 1} ref={demo} />
 			<div className="bottomContainer">
-				<Title index={index} text={text} delayFactor={delayFactor} ref={title}></Title>
+				<DesignTitle index={index} text={text} delayFactor={delayFactor} ref={title}></DesignTitle>
 				<div
 					onClick={() => {
 						// Trigger demo video transition out
@@ -80,7 +80,6 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 
 						setTimeout(() => {
 							openItem()
-							title.current.remove()
 							button.current.remove(0.2)
 							navTitleRef.current.replace('CUSTOM')
 							setTimeout(() => {
