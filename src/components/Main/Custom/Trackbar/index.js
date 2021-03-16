@@ -112,7 +112,7 @@ export default function Trackbar({ text, range, decimals, initialValue, delay })
 				trackerIndex.current.innerHTML = trackbarIndex.value.toFixed(decimals)
 			},
 		})
-	}, [range, initialValue])
+	}, [range, initialValue, delay, decimals])
 
 	return (
 		<Container
