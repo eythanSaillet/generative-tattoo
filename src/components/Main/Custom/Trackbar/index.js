@@ -43,6 +43,7 @@ const Container = styled.div`
 					top: 0;
 					background: var(--black);
 					border: solid 2px var(--white);
+					opacity: 0;
 					transform: translate(0, -50%);
 					pointer-events: none;
 					span {
@@ -101,7 +102,7 @@ export default function Trackbar({ text, range, decimals, initialValue, delay })
 		gsap.to(bar.current, { duration: 1, scaleX: 1, delay: delay })
 		gsap.to(tracker.current, { duration: 1, left: x, delay: delay, ease: Power2.easeInOut })
 
-		gsap.from(tracker.current, { duration: 0.5, opacity: 0, delay: delay, ease: Power2.easeIn })
+		gsap.to(tracker.current, { duration: 0.5, opacity: 1, delay: delay, ease: Power2.easeIn })
 		let trackbarIndex = { value: 0 }
 		gsap.to(trackbarIndex, {
 			duration: 1,
