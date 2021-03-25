@@ -35,7 +35,7 @@ const Item = styled.div`
 	}
 `
 
-export default function DesignItem({ index, text, delayFactor, horizontalScrollRef, navTitleRef }) {
+export default function DesignItem({ index, text, delayFactor, horizontalScrollRef, navTitleRef, delay }) {
 	let item = useRef(null)
 	let title = useRef(null)
 	let button = useRef(null)
@@ -70,9 +70,9 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 				demo.current.pause()
 			}}
 		>
-			<Demo index={parseInt(index) - 1} ref={demo} />
+			<Demo index={parseInt(index) - 1} ref={demo} delay={delay} />
 			<div className="bottomContainer">
-				<DesignTitle index={index} text={text} delayFactor={delayFactor} ref={title}></DesignTitle>
+				<DesignTitle index={index} text={text} delayFactor={delayFactor} ref={title} delay={delay}></DesignTitle>
 				<div
 					onClick={() => {
 						// Trigger demo video transition out
@@ -85,11 +85,11 @@ export default function DesignItem({ index, text, delayFactor, horizontalScrollR
 							setTimeout(() => {
 								let designName = text.join('').toLowerCase()
 								history.push(`choose/${designName}`)
-							}, 2000)
+							}, 1500)
 						}, 600)
 					}}
 				>
-					<Button delayFactor={delayFactor} ref={button} />
+					<Button delayFactor={delayFactor} ref={button} delay={delay} />
 				</div>
 			</div>
 		</Item>

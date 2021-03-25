@@ -22,13 +22,13 @@ const Container = styled.div`
 	}
 `
 
-export default function DesignList({ navTitleRef }) {
+export default function DesignList({ navTitleRef, delay }) {
 	let horizontalScroll = useRef(null)
 	let lines = useRef([])
 
 	let items = []
 	for (let i = 0; i < config.length; i++) {
-		items.push(<DesignItem index={config[i].index} text={config[i].title} delayFactor={i} key={i} horizontalScrollRef={horizontalScroll} navTitleRef={navTitleRef} />)
+		items.push(<DesignItem index={config[i].index} text={config[i].title} delayFactor={i} key={i} horizontalScrollRef={horizontalScroll} navTitleRef={navTitleRef} delay={delay} />)
 		if (i !== config.length - 1) {
 			items.push(<div className="line" key={i + 0.5} ref={(element) => lines.current.push(element)}></div>)
 		}
@@ -36,7 +36,7 @@ export default function DesignList({ navTitleRef }) {
 
 	useEffect(() => {
 		for (let i = 0; i < lines.current.length; i++) {
-			gsap.to(lines.current[i], { duration: 1, scaleY: 1, delay: 1 + i * 0.4 })
+			gsap.to(lines.current[i], { duration: 1, scaleY: 1, delay: 1 + i * 0.4 + delay })
 		}
 	}, [lines])
 

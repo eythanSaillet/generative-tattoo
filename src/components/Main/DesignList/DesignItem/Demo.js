@@ -30,7 +30,7 @@ const Container = styled.div`
 	}
 `
 
-const Demo = forwardRef(({ index }, ref) => {
+const Demo = forwardRef(({ index, delay }, ref) => {
 	const videoIn = useRef(null)
 	const video = useRef(null)
 	const videoOut = useRef(null)
@@ -43,7 +43,7 @@ const Demo = forwardRef(({ index }, ref) => {
 	useEffect(() => {
 		setTimeout(() => {
 			videoIn.current.play()
-		}, 750 * index + 1000)
+		}, 750 * index + 1000 + delay)
 	}, [index])
 
 	useImperativeHandle(ref, () => ({

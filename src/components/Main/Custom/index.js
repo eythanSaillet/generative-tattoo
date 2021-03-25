@@ -61,7 +61,7 @@ export default function Custom({ navTitleRef, delay }) {
 		}
 	}
 	useEffect(() => {
-		gsap.to(line.current, { duration: 0.7, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
+		gsap.to(line.current, { duration: 1.2, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
 	}, [delay])
 
 	return (
@@ -72,17 +72,17 @@ export default function Custom({ navTitleRef, delay }) {
 					onClick={() => {
 						navTitleRef.current.replace('CHOOSE')
 						returnButton.current.remove()
-						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: delay + 0.3 })
+						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: 0.3 })
 						setTimeout(() => {
 							history.goBack()
 						}, 2000)
 					}}
 				>
-					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 650} hover={true} ref={returnButton} />
+					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 1200} hover={true} ref={returnButton} />
 				</div>
-				<Sketch />
+				<Sketch delay={delay + 2} />
 				<div className="designTitleContainer">
-					<DesignTitle index={design.index} text={design.title} displayAnim={false} />
+					<DesignTitle index={design.index} text={design.title} displayAnim={delay === 0 ? true : false} delay={delay === 0 ? -1 : 0} />
 				</div>
 			</div>
 			<div className="line" ref={line}></div>
@@ -92,7 +92,7 @@ export default function Custom({ navTitleRef, delay }) {
 				<Trackbar text="Factor" range={[2, 50]} decimals={1} initialValue={10.9} delay={delay + 1.9} />
 				<Trackbar text="Noise" range={[1, 4]} decimals={2} initialValue={3.76} delay={delay + 2.1} />
 				<Trackbar text="Perception" range={[0, 1]} decimals={3} initialValue={0.232} delay={delay + 2.3} />
-				<Button text="GENERATE" delay={delay + 1} />
+				<Button text="GENERATE" delay={delay + 2.5} />
 			</div>
 		</Container>
 	)

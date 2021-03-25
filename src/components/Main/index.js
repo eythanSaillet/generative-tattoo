@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, Switch, Route } from 'react-router-dom'
+import { useLastLocation } from 'react-router-last-location'
 
 import DesignList from './DesignList/index'
 import Custom from './Custom/index'
@@ -12,14 +13,17 @@ const Container = styled.div`
 
 export default function Main({ navTitleRef }) {
 	let match = useRouteMatch()
+
+	const lastLocation = useLastLocation()
+
 	return (
 		<Container>
 			<Switch>
 				<Route path={`${match.path}/:design`}>
-					<Custom navTitleRef={navTitleRef} delay={0} />
+					<Custom navTitleRef={navTitleRef} delay={lastLocation === null ? 0 : -1.15} />
 				</Route>
 				<Route path={match.path}>
-					<DesignList navTitleRef={navTitleRef} />
+					<DesignList navTitleRef={navTitleRef} delay={lastLocation === null || lastLocation.pathname === '/' ? 0 : -0.9} />
 				</Route>
 			</Switch>
 		</Container>

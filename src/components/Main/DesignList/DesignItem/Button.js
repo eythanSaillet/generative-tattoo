@@ -72,7 +72,7 @@ const Container = styled.div`
 	}
 `
 
-const Button = forwardRef(({ delayFactor }, ref) => {
+const Button = forwardRef(({ delayFactor, delay }, ref) => {
 	let displayEffect = useRef(null)
 	let effect = useRef(null)
 
@@ -85,11 +85,11 @@ const Button = forwardRef(({ delayFactor }, ref) => {
 		effectAnimation.to(effect.current, { duration: 5, rotation: 360, ease: Linear.easeNone })
 
 		// Display the button
-		gsap.to(displayEffect.current, { duration: 3, scaleY: 0, rotate: 405, delay: 1 + delayFactor * 0.75 })
+		gsap.to(displayEffect.current, { duration: 3, scaleY: 0, rotate: 405, delay: 1 + delayFactor * 0.75 + delay })
 
 		// Display the arrows
-		gsap.to(arrowTop.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 })
-		gsap.to(arrowBottom.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 })
+		gsap.to(arrowTop.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 + delay })
+		gsap.to(arrowBottom.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 + delay })
 	}, [delayFactor])
 
 	useImperativeHandle(ref, () => ({

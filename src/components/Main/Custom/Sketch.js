@@ -14,14 +14,17 @@ const Container = styled.div`
 	}
 `
 
-export default function P5Sketch(props) {
+export default function P5Sketch({ delay }) {
 	let system
 
 	const setup = (p5, canvasParentRef) => {
 		p5.createCanvas(500, 200).parent(canvasParentRef)
 
 		system = require('./sketchSystems/disturbedLinesSystem').default
-		system.init(p5)
+
+		setTimeout(() => {
+			system.init(p5)
+		}, delay * 1000)
 	}
 
 	const draw = (p5) => {}
