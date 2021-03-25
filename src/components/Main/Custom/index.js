@@ -49,6 +49,7 @@ const Container = styled.div`
 export default function Custom({ navTitleRef, delay }) {
 	const line = useRef(null)
 	const returnButton = useRef(null)
+	const sketch = useRef(null)
 
 	const history = useHistory()
 
@@ -80,7 +81,7 @@ export default function Custom({ navTitleRef, delay }) {
 				>
 					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 1200} hover={true} ref={returnButton} />
 				</div>
-				<Sketch delay={delay + 2} />
+				<Sketch delay={delay + 2} ref={sketch} />
 				<div className="designTitleContainer">
 					<DesignTitle index={design.index} text={design.title} displayAnim={delay === 0 ? true : false} delay={delay === 0 ? -1 : 0} />
 				</div>
@@ -92,7 +93,13 @@ export default function Custom({ navTitleRef, delay }) {
 				<Trackbar text="Factor" range={[2, 50]} decimals={1} initialValue={10.9} delay={delay + 1.9} />
 				<Trackbar text="Noise" range={[1, 4]} decimals={2} initialValue={3.76} delay={delay + 2.1} />
 				<Trackbar text="Perception" range={[0, 1]} decimals={3} initialValue={0.232} delay={delay + 2.3} />
-				<Button text="GENERATE" delay={delay + 2.5} />
+				<div
+					onClick={() => {
+						sketch.current.generate()
+					}}
+				>
+					<Button text="GENERATE" delay={delay + 2.5} />
+				</div>
 			</div>
 		</Container>
 	)
