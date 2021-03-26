@@ -38,7 +38,7 @@ export default function DesignList({ navTitleRef, delay }) {
 		for (let i = 0; i < lines.current.length; i++) {
 			gsap.to(lines.current[i], { duration: 1, scaleY: 1, delay: 1 + i * 0.4 + delay })
 		}
-	}, [lines])
+	}, [lines, delay])
 
 	return (
 		<Container>

@@ -90,7 +90,7 @@ const Button = forwardRef(({ delayFactor, delay }, ref) => {
 		// Display the arrows
 		gsap.to(arrowTop.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 + delay })
 		gsap.to(arrowBottom.current, { duration: 1, scaleX: 1, delay: 2.3 + delayFactor * 0.75 + delay })
-	}, [delayFactor])
+	}, [delayFactor, delay])
 
 	useImperativeHandle(ref, () => ({
 		// Unmount animation

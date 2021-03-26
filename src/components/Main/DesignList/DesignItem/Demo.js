@@ -44,7 +44,7 @@ const Demo = forwardRef(({ index, delay }, ref) => {
 		setTimeout(() => {
 			videoIn.current.play()
 		}, 750 * index + 1000 + delay)
-	}, [index])
+	}, [index, delay])
 
 	useImperativeHandle(ref, () => ({
 		play() {
