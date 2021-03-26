@@ -4,7 +4,7 @@ import gsap, { Power1 } from 'gsap'
 import { useHistory } from 'react-router-dom'
 
 import config from '../../../assets/config.json'
-import Trackbar from './Trackbar/index'
+import Trackbar from './Trackbar'
 import AnimatedText from '../../utils/AnimatedText'
 import Sketch from './Sketch'
 import Button from '../../utils/Button'
@@ -61,6 +61,13 @@ export default function Custom({ navTitleRef, delay }) {
 			design = _design
 		}
 	}
+
+	// Create trackbars
+	let trackbars = []
+	for (let i = 0; i < design.options.length; i++) {
+		trackbars.push(<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={delay + 1.5 + 0.2 * i} sketch={sketch} key={i} />)
+	}
+
 	useEffect(() => {
 		gsap.to(line.current, { duration: 1.2, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
 	}, [delay])
@@ -88,11 +95,7 @@ export default function Custom({ navTitleRef, delay }) {
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
-				<Trackbar text="Width" range={[2, 11]} decimals={2} initialValue={9.25} delay={delay + 1.5} />
-				<Trackbar text="Height" range={[2, 100]} decimals={0} initialValue={6} delay={delay + 1.7} />
-				<Trackbar text="Factor" range={[2, 50]} decimals={1} initialValue={10.9} delay={delay + 1.9} />
-				<Trackbar text="Noise" range={[1, 4]} decimals={2} initialValue={3.76} delay={delay + 2.1} />
-				<Trackbar text="Perception" range={[0, 1]} decimals={3} initialValue={0.232} delay={delay + 2.3} />
+				{trackbars}
 				<div
 					onClick={() => {
 						sketch.current.generate()

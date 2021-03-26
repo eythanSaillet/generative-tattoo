@@ -16,13 +16,13 @@ const Container = styled.div`
 
 const P5Sketch = forwardRef(({ delay }, ref) => {
 	let system
-	let p5Ref = 3
+	let p5Ref
 
 	const setup = (p5, canvasParentRef) => {
-		p5Ref = p5
-		p5.createCanvas(500, 200).parent(canvasParentRef)
-
 		system = require('./sketchSystems/disturbedLinesSystem').default
+
+		p5Ref = p5
+		p5.createCanvas(system.canvasWidth, system.canvasHeight).parent(canvasParentRef)
 
 		setTimeout(() => {
 			system.init(p5)
@@ -33,8 +33,11 @@ const P5Sketch = forwardRef(({ delay }, ref) => {
 
 	useImperativeHandle(ref, () => ({
 		generate() {
-			console.log('generate')
 			system.generate(p5Ref)
+		},
+
+		updateValue(varName, value) {
+			system.updateValue(varName, value)
 		},
 	}))
 

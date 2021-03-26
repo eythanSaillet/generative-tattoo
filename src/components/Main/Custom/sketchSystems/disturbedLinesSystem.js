@@ -1,6 +1,6 @@
 let disturbedLinesSystem = {
-	canvasWidth: null,
-	canvasHeight: null,
+	canvasWidth: 500,
+	canvasHeight: 200,
 
 	// SYSTEM PROPERTIES
 	numberOfLines: 23,
@@ -31,8 +31,7 @@ let disturbedLinesSystem = {
 	noiseFactor: 0,
 
 	init(p5) {
-		this.canvasWidth = p5.width
-		this.canvasHeight = p5.height
+		p5.pixelDensity(2.0)
 
 		this.generate(p5)
 	},
@@ -144,6 +143,10 @@ let disturbedLinesSystem = {
 			}
 		}
 		drawLineInterval()
+	},
+
+	updateValue(varName, value) {
+		this[varName] = parseFloat(value)
 	},
 
 	save(p5) {

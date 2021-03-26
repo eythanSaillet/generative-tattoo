@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 
-import AnimatedText from '../../../utils/AnimatedText'
+import AnimatedText from '../../utils/AnimatedText'
 
 const Container = styled.div`
 	width: 100%;
@@ -61,9 +61,10 @@ const Container = styled.div`
 	}
 `
 
-export default function Trackbar({ text, range, decimals, initialValue, delay }) {
+export default function Trackbar({ text, varName, range, decimals, initialValue, delay, sketch }) {
 	const [position, setPosition] = useState(0)
-	const [isClicked, setIsClicked] = useState(false)
+	const [windowIsClicked, setWindowIsClicked] = useState(false)
+	const [valueState, setValueState] = useState(null)
 
 	const barContainerOut = useRef(null)
 	const tracker = useRef(null)
@@ -71,7 +72,7 @@ export default function Trackbar({ text, range, decimals, initialValue, delay })
 	const bar = useRef(null)
 
 	window.addEventListener('mouseup', () => {
-		setIsClicked(false)
+		setWindowIsClicked(false)
 	})
 
 	const updateTracker = (e) => {
@@ -83,8 +84,11 @@ export default function Trackbar({ text, range, decimals, initialValue, delay })
 
 		// Update tracker index
 		const percent = x / (targetRect.width - 10)
-		const value = range[0] + percent * (range[1] - range[0])
-		trackerIndex.current.innerHTML = value.toFixed(decimals)
+		const value = (range[0] + percent * (range[1] - range[0])).toFixed(decimals)
+		trackerIndex.current.innerHTML = value
+
+		// Set value state
+		setValueState(value)
 
 		// Translate the tracker
 		setPosition(x)
@@ -118,7 +122,7 @@ export default function Trackbar({ text, range, decimals, initialValue, delay })
 	return (
 		<Container
 			onMouseMove={(e) => {
-				if (isClicked) {
+				if (windowIsClicked) {
 					updateTracker(e)
 				}
 			}}
@@ -128,12 +132,19 @@ export default function Trackbar({ text, range, decimals, initialValue, delay })
 				<div
 					className="barContainerOut"
 					onMouseDown={(e) => {
-						setIsClicked(true)
+						setWindowIsClicked(true)
 
 						updateTracker(e)
 					}}
 					onMouseUp={() => {
-						setIsClicked(false)
+						setWindowIsClicked(false)
+
+						sketch.current.updateValue(varName, valueState)
+					}}
+					onMouseLeave={() => {
+						if (windowIsClicked) {
+							sketch.current.updateValue(varName, valueState)
+						}
 					}}
 					ref={barContainerOut}
 				>

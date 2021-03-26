@@ -2,7 +2,37 @@
 	{
 		"index": "01",
 		"title": ["Disturbed", "Lines"],
-		"slug": "disturbedlines"
+		"slug": "disturbedlines",
+		"options": [
+			{
+				"name": "Number of lines",
+				"varName": "numberOfLines",
+				"range": [2, 30],
+				"initialValue": 15,
+				"decimals": 0
+			},
+			{
+				"name": "Width",
+				"varName": "canvasHeight",
+				"range": [50, 500],
+				"initialValue": 200,
+				"decimals": 0
+			},
+			{
+				"name": "Incrementation factor",
+				"varName": "factorIncrementation",
+				"range": [0, 100],
+				"initialValue": 20,
+				"decimals": 0
+			},
+			{
+				"name": "Step between lines",
+				"varName": "stepBetweenLines",
+				"range": [0, 50],
+				"initialValue": 23,
+				"decimals": 0
+			}
+		]
 	},
 	{
 		"index": "02",
