@@ -9,6 +9,7 @@ import AnimatedText from '../../utils/AnimatedText'
 import Sketch from './Sketch'
 import Button from '../../utils/Button'
 import DesignTitle from '../../utils/DesignTitle'
+import { ReactComponent as NewKeyButtonImage } from '../../../assets/newKey.svg'
 
 const Container = styled.div`
 	width: 100%;
@@ -43,6 +44,61 @@ const Container = styled.div`
 		flex-direction: column;
 		align-items: center;
 		padding-top: 30px;
+		.customText {
+			width: 80%;
+			font-family: 'Made Outer Sans Thin';
+			font-size: 0.74em;
+			letter-spacing: 1px;
+			margin-bottom: 35px;
+			line-height: 150%;
+		}
+		.keyInput {
+			width: 80%;
+			height: 40px;
+			display: flex;
+			margin-bottom: 37px;
+			.input {
+				width: calc(100% - 40px);
+				height: 100%;
+				color: var(--white);
+				border: 1px solid var(--white);
+				background: var(--black);
+				padding: 0 10px;
+				font-size: 1.2em;
+				letter-spacing: 3px;
+				&:focus {
+					outline: none;
+				}
+			}
+			.newKeyButton {
+				width: 40px;
+				height: 100%;
+				border-top: 1px solid var(--white);
+				border-right: 1px solid var(--white);
+				border-bottom: 1px solid var(--white);
+				background: var(--black);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				user-select: none;
+				cursor: pointer;
+				svg {
+					width: 50%;
+					fill: var(--white);
+				}
+				&:hover {
+					background: var(--white);
+					svg {
+						fill: var(--black);
+					}
+				}
+				&:active {
+					svg {
+						fill: var(--white);
+					}
+				}
+			}
+		}
 	}
 `
 
@@ -50,6 +106,7 @@ export default function Custom({ navTitleRef, delay }) {
 	const line = useRef(null)
 	const returnButton = useRef(null)
 	const sketch = useRef(null)
+	const keyInput = useRef(null)
 
 	const history = useHistory()
 
@@ -95,8 +152,51 @@ export default function Custom({ navTitleRef, delay }) {
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
-				{trackbars}
+				<p className="customText">There is an infinity of patterns, each of them is attached to a key. Enter a key or generate one randomly for a statistically unique result.</p>
+				{/* {trackbars} */}
+				<div className="keyInput">
+					<input
+						onChange={(e) => {
+							e.target.value = e.target.value.toUpperCase()
+						}}
+						onBlur={() => {
+							// Encode the key
+							let randomKeyCode = ''
+							for (let i = 0; i < keyInput.current.value.length; i++) {
+								randomKeyCode += keyInput.current.value.charCodeAt(i)
+							}
+
+							// Update the system
+							sketch.current.updateValue('noiseSeed', randomKeyCode)
+						}}
+						className="input"
+						type="text"
+						ref={keyInput}
+					/>
+					<div
+						className="newKeyButton"
+						onClick={() => {
+							// Generate random key
+							const keyPossibility = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+							let randomKey = ''
+							let randomKeyCode = ''
+							for (let i = 0; i < 10; i++) {
+								randomKey += keyPossibility[Math.floor(Math.random() * keyPossibility.length)]
+								randomKeyCode += randomKey.charCodeAt(i)
+							}
+
+							// Update input
+							keyInput.current.value = randomKey
+
+							// Update system
+							sketch.current.updateValue('noiseSeed', randomKeyCode)
+						}}
+					>
+						<NewKeyButtonImage />
+					</div>
+				</div>
 				<div
+					style={{ width: '80%' }}
 					onClick={() => {
 						sketch.current.generate()
 					}}

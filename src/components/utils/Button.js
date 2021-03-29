@@ -6,8 +6,11 @@ import AnimatedText from './AnimatedText'
 
 const Container = styled.div`
 	position: relative;
-	padding: 15px 25px;
+	width: 100%;
+	padding: 18px 25px;
 	border: solid 1px var(--white);
+	display: flex;
+	justify-content: center;
 	cursor: pointer;
 	user-select: none;
 	&:hover {

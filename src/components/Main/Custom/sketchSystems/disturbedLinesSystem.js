@@ -27,6 +27,7 @@ let disturbedLinesSystem = {
 	reverseColor: '#ff0000',
 
 	// NOISE PROPERTIES
+	noiseSeed: '',
 	noiseScale: 0.008,
 	noiseFactor: 0,
 
@@ -41,7 +42,7 @@ let disturbedLinesSystem = {
 			this.finishToGenerate = false
 
 			// RESET VALUES
-			p5.noiseSeed(p5.random(99999))
+			this.noiseSeed === '' ? p5.noiseSeed(p5.random(99999)) : p5.noiseSeed(this.noiseSeed)
 			this.point = {}
 			this.tempPoint = {}
 			this.origin = { x: 10, y: -2 }
