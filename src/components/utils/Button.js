@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import gsap, { Power3 } from 'gsap'
 
@@ -11,8 +11,10 @@ const Container = styled.div`
 	border: solid 1px var(--white);
 	display: flex;
 	justify-content: center;
-	cursor: pointer;
 	user-select: none;
+	cursor: pointer;
+	pointer-events: ${(props) => (props.enable ? 'auto' : 'none')};
+	opacity: ${(props) => (props.enable ? 1 : 0.4)};
 	&:hover {
 		background: var(--white);
 		color: var(--black);
@@ -35,18 +37,22 @@ const Container = styled.div`
 		z-index: 0;
 	}
 `
-
-export default function Button({ text, delay }) {
+const Button = forwardRef(({ text, delay, enable }, ref) => {
 	let displayEffect = useRef(null)
 
 	useEffect(() => {
 		gsap.to(displayEffect.current, { duration: 1.5, scaleY: 0, rotate: 135, ease: Power3.easeInOut, delay: delay })
 	}, [delay])
 
+	useImperativeHandle(ref, () => ({
+		remove() {},
+	}))
+
 	return (
-		<Container>
+		<Container enable={enable}>
 			<div className="displayEffect" ref={displayEffect} />
 			<AnimatedText text={text} type="button" stagger={0.05} delay={delay * 1000 + 250}></AnimatedText>
 		</Container>
 	)
-}
+})
+export default Button

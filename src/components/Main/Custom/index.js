@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import gsap, { Power1 } from 'gsap'
 import { useHistory } from 'react-router-dom'
@@ -106,6 +106,8 @@ export default function Custom({ navTitleRef, delay }) {
 	const keyInput = useRef(null)
 	const customSentence = useRef(null)
 
+	const [inputIsEmpty, setInputIsEmpty] = useState(true)
+
 	const history = useHistory()
 
 	// Get design config
@@ -121,6 +123,10 @@ export default function Custom({ navTitleRef, delay }) {
 	let trackbars = []
 	for (let i = 0; i < design.options.length; i++) {
 		trackbars.push(<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={delay + 1.5 + 0.2 * i} sketch={sketch} key={i} />)
+	}
+
+	const updateGenerateButton = () => {
+		keyInput.current.value.length > 0 ? setInputIsEmpty(false) : setInputIsEmpty(true)
 	}
 
 	useEffect(() => {
@@ -164,6 +170,8 @@ export default function Custom({ navTitleRef, delay }) {
 					<input
 						onChange={(e) => {
 							e.target.value = e.target.value.toUpperCase()
+
+							updateGenerateButton()
 						}}
 						onBlur={() => {
 							// Encode the key
@@ -196,6 +204,8 @@ export default function Custom({ navTitleRef, delay }) {
 
 							// Update system
 							sketch.current.updateValue('noiseSeed', randomKeyCode)
+
+							updateGenerateButton()
 						}}
 					>
 						<NewKeyButtonImage />
@@ -204,10 +214,12 @@ export default function Custom({ navTitleRef, delay }) {
 				<div
 					style={{ width: '80%' }}
 					onClick={() => {
-						sketch.current.generate()
+						if (!inputIsEmpty) {
+							sketch.current.generate()
+						}
 					}}
 				>
-					<Button text="GENERATE" delay={delay + 2.5} />
+					<Button text="GENERATE" delay={delay + 2.5} enable={!inputIsEmpty} />
 				</div>
 			</div>
 		</Container>

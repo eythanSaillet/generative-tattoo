@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react'
+import React, { useRef, forwardRef, useImperativeHandle } from 'react'
 import Sketch from 'react-p5'
 import styled from 'styled-components'
 
@@ -15,17 +15,17 @@ const Container = styled.div`
 `
 
 const P5Sketch = forwardRef(({ delay }, ref) => {
-	let system
-	let p5Ref
+	const system = useRef(null)
+	const p5Ref = useRef(null)
 
 	const setup = (p5, canvasParentRef) => {
-		system = require('./sketchSystems/disturbedLinesSystem').default
+		system.current = require('./sketchSystems/disturbedLinesSystem').default
 
-		p5Ref = p5
-		p5.createCanvas(system.canvasWidth, system.canvasHeight).parent(canvasParentRef)
+		p5Ref.current = p5
+		p5.createCanvas(system.current.canvasWidth, system.current.canvasHeight).parent(canvasParentRef)
 
 		setTimeout(() => {
-			system.init(p5)
+			system.current.init(p5)
 		}, delay * 1000)
 	}
 
@@ -33,11 +33,11 @@ const P5Sketch = forwardRef(({ delay }, ref) => {
 
 	useImperativeHandle(ref, () => ({
 		generate() {
-			system.generate(p5Ref)
+			system.current.generate(p5Ref.current)
 		},
 
 		updateValue(varName, value) {
-			system.updateValue(varName, value)
+			system.current.updateValue(varName, value)
 		},
 	}))
 
