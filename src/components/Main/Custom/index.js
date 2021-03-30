@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import config from '../../../assets/config.json'
 import Trackbar from './Trackbar'
 import AnimatedText from '../../utils/AnimatedText'
+import AnimatedSentence from '../../utils/AnimatedSentence'
 import Sketch from './Sketch'
 import Button from '../../utils/Button'
 import DesignTitle from '../../utils/DesignTitle'
@@ -44,19 +45,15 @@ const Container = styled.div`
 		flex-direction: column;
 		align-items: center;
 		padding-top: 30px;
-		.customText {
+		.customSentence {
 			width: 80%;
-			font-family: 'Made Outer Sans Thin';
-			font-size: 0.74em;
-			letter-spacing: 1px;
 			margin-bottom: 35px;
-			line-height: 150%;
 		}
 		.keyInput {
 			width: 80%;
 			height: 40px;
 			display: flex;
-			margin-bottom: 37px;
+			margin-bottom: 40px;
 			.input {
 				width: calc(100% - 40px);
 				height: 100%;
@@ -107,6 +104,7 @@ export default function Custom({ navTitleRef, delay }) {
 	const returnButton = useRef(null)
 	const sketch = useRef(null)
 	const keyInput = useRef(null)
+	const customSentence = useRef(null)
 
 	const history = useHistory()
 
@@ -135,12 +133,18 @@ export default function Custom({ navTitleRef, delay }) {
 				<div
 					className="returnButton"
 					onClick={() => {
+						// Change title
 						navTitleRef.current.replace('CHOOSE')
+
+						// Remove custom interface
 						returnButton.current.remove()
 						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: 0.3 })
+						customSentence.current.remove(0.25)
+
+						// Go back to choose interface
 						setTimeout(() => {
 							history.goBack()
-						}, 2000)
+						}, 2100)
 					}}
 				>
 					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 1200} hover={true} ref={returnButton} />
@@ -152,7 +156,9 @@ export default function Custom({ navTitleRef, delay }) {
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
-				<p className="customText">There is an infinity of patterns, each of them is attached to a key. Enter a key or generate one randomly for a statistically unique result.</p>
+				<div className="customSentence">
+					<AnimatedSentence delay={delay * 1000 + 1200} text="There is an infinity of patterns, each of them is attached to a key. Enter a key or generate one randomly for a statistically unique result." ref={customSentence} />
+				</div>
 				{/* {trackbars} */}
 				<div className="keyInput">
 					<input
