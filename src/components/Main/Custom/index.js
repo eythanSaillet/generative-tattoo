@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import gsap, { Power1 } from 'gsap'
+import gsap, { Power1, Power2 } from 'gsap'
 import { useHistory } from 'react-router-dom'
 
 import config from '../../../assets/config.json'
@@ -44,8 +44,8 @@ const Container = styled.div`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding-top: 30px;
-		.customSentence {
+		padding-top: 35px;
+		.customSentenceContainer {
 			width: 80%;
 			margin-bottom: 35px;
 		}
@@ -53,7 +53,7 @@ const Container = styled.div`
 			width: 80%;
 			height: 40px;
 			display: flex;
-			margin-bottom: 40px;
+			margin-bottom: 50px;
 			.input {
 				width: calc(100% - 40px);
 				height: 100%;
@@ -96,6 +96,11 @@ const Container = styled.div`
 				}
 			}
 		}
+		.trackbarsContainer {
+			width: 100%;
+			height: 0;
+			overflow: hidden;
+		}
 	}
 `
 
@@ -105,8 +110,11 @@ export default function Custom({ navTitleRef, delay }) {
 	const sketch = useRef(null)
 	const keyInput = useRef(null)
 	const customSentence = useRef(null)
+	const customSentenceContainer = useRef(null)
+	const trackbarsContainer = useRef(null)
 
 	const [inputIsEmpty, setInputIsEmpty] = useState(true)
+	const [isFirstTimeGenerated, setIsFirstTimeGenerated] = useState(false)
 
 	const history = useHistory()
 
@@ -122,11 +130,18 @@ export default function Custom({ navTitleRef, delay }) {
 	// Create trackbars
 	let trackbars = []
 	for (let i = 0; i < design.options.length; i++) {
-		trackbars.push(<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={delay + 1.5 + 0.2 * i} sketch={sketch} key={i} />)
+		trackbars.push(<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={0.5 + 0.2 * i} sketch={sketch} key={i} />)
 	}
 
-	const updateGenerateButton = () => {
+	function updateGenerateButton() {
 		keyInput.current.value.length > 0 ? setInputIsEmpty(false) : setInputIsEmpty(true)
+	}
+
+	function transitionToTrackbars() {
+		setIsFirstTimeGenerated(true)
+		customSentence.current.remove()
+		gsap.to(customSentenceContainer.current, { duration: 1.3, height: 0, marginBottom: 0, delay: 0.27, ease: Power2.easeInOut })
+		gsap.to(trackbarsContainer.current, { duration: 1.5, height: 'auto', marginBottom: '30px', delay: 0.2, ease: Power2.easeInOut })
 	}
 
 	useEffect(() => {
@@ -162,10 +177,9 @@ export default function Custom({ navTitleRef, delay }) {
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
-				<div className="customSentence">
+				<div className="customSentenceContainer" ref={customSentenceContainer}>
 					<AnimatedSentence delay={delay * 1000 + 1200} text="There is an infinity of patterns, each of them is attached to a key. Enter a key or generate one randomly for a statistically unique result." ref={customSentence} />
 				</div>
-				{/* {trackbars} */}
 				<div className="keyInput">
 					<input
 						onChange={(e) => {
@@ -211,11 +225,16 @@ export default function Custom({ navTitleRef, delay }) {
 						<NewKeyButtonImage />
 					</div>
 				</div>
+				<div className="trackbarsContainer" ref={trackbarsContainer}>
+					{isFirstTimeGenerated && trackbars}
+				</div>
 				<div
 					style={{ width: '80%' }}
 					onClick={() => {
 						if (!inputIsEmpty) {
 							sketch.current.generate()
+
+							transitionToTrackbars()
 						}
 					}}
 				>
