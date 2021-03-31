@@ -34,7 +34,7 @@ let disturbedLinesSystem = {
 	init(p5) {
 		p5.pixelDensity(2.0)
 
-		this.generate(p5)
+		// this.generate(p5)
 	},
 
 	generate(p5) {

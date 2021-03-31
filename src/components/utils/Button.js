@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
-import gsap, { Power3 } from 'gsap'
+import gsap, { Power1 } from 'gsap'
 
 import AnimatedText from './AnimatedText'
 
@@ -8,13 +8,12 @@ const Container = styled.div`
 	position: relative;
 	width: 100%;
 	padding: 18px 25px;
-	border: solid 1px var(--white);
+	border: ${(props) => (props.enable ? 'solid 1px var(--white)' : 'solid 1px var(--darkGrey)')};
 	display: flex;
 	justify-content: center;
 	user-select: none;
 	cursor: pointer;
 	pointer-events: ${(props) => (props.enable ? 'auto' : 'none')};
-	opacity: ${(props) => (props.enable ? 1 : 0.4)};
 	&:hover {
 		background: var(--white);
 		color: var(--black);
@@ -26,22 +25,29 @@ const Container = styled.div`
 		z-index: 10;
 		pointer-events: none;
 	}
-	.displayEffect {
+	> div:not(.displayEffectContainer) {
+		opacity: ${(props) => (props.enable ? '1' : '0.3')};
+	}
+	.displayEffectContainer {
 		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 120%;
-		height: 160%;
-		background: var(--black);
-		transform: translate(-50%, -50%);
-		z-index: 0;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: scale(1.05);
+		.displayEffect {
+			width: 100%;
+			height: 100%;
+			background: black;
+			transform-origin: right;
+		}
 	}
 `
 const Button = forwardRef(({ text, delay, enable }, ref) => {
 	let displayEffect = useRef(null)
 
 	useEffect(() => {
-		gsap.to(displayEffect.current, { duration: 1.5, scaleY: 0, rotate: 135, ease: Power3.easeInOut, delay: delay })
+		gsap.to(displayEffect.current, { duration: 1, scaleX: 0, ease: Power1.easeInOut, delay: delay })
 	}, [delay])
 
 	useImperativeHandle(ref, () => ({
@@ -50,7 +56,9 @@ const Button = forwardRef(({ text, delay, enable }, ref) => {
 
 	return (
 		<Container enable={enable}>
-			<div className="displayEffect" ref={displayEffect} />
+			<div className="displayEffectContainer">
+				<div className="displayEffect" ref={displayEffect} />
+			</div>
 			<AnimatedText text={text} type="button" stagger={0.05} delay={delay * 1000 + 250}></AnimatedText>
 		</Container>
 	)

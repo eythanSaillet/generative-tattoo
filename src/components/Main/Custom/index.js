@@ -50,10 +50,20 @@ const Container = styled.div`
 			margin-bottom: 35px;
 		}
 		.keyInput {
+			position: relative;
 			width: 80%;
 			height: 40px;
 			display: flex;
-			margin-bottom: 50px;
+			margin-bottom: 42px;
+			.keyInputMask {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: var(--black);
+				transform-origin: right;
+			}
 			.input {
 				width: calc(100% - 40px);
 				height: 100%;
@@ -109,6 +119,7 @@ export default function Custom({ navTitleRef, delay }) {
 	const returnButton = useRef(null)
 	const sketch = useRef(null)
 	const keyInput = useRef(null)
+	const keyInputMask = useRef(null)
 	const customSentence = useRef(null)
 	const customSentenceContainer = useRef(null)
 	const trackbarsContainer = useRef(null)
@@ -141,11 +152,12 @@ export default function Custom({ navTitleRef, delay }) {
 		setIsFirstTimeGenerated(true)
 		customSentence.current.remove()
 		gsap.to(customSentenceContainer.current, { duration: 1.3, height: 0, marginBottom: 0, delay: 0.27, ease: Power2.easeInOut })
-		gsap.to(trackbarsContainer.current, { duration: 1.5, height: 'auto', marginBottom: '30px', delay: 0.2, ease: Power2.easeInOut })
+		gsap.to(trackbarsContainer.current, { duration: 1.5, height: 'auto', marginBottom: '25px', delay: 0.2, ease: Power2.easeInOut })
 	}
 
 	useEffect(() => {
 		gsap.to(line.current, { duration: 1.2, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
+		gsap.to(keyInputMask.current, { duration: 1, scaleX: 0, ease: Power1.easeInOut, delay: delay + 1.7 })
 	}, [delay])
 
 	return (
@@ -181,6 +193,7 @@ export default function Custom({ navTitleRef, delay }) {
 					<AnimatedSentence delay={delay * 1000 + 1200} text="There is an infinity of patterns, each of them is attached to a key. Enter a key or generate one randomly for a statistically unique result." ref={customSentence} />
 				</div>
 				<div className="keyInput">
+					<div className="keyInputMask" ref={keyInputMask} />
 					<input
 						onChange={(e) => {
 							e.target.value = e.target.value.toUpperCase()
@@ -238,7 +251,7 @@ export default function Custom({ navTitleRef, delay }) {
 						}
 					}}
 				>
-					<Button text="GENERATE" delay={delay + 2.5} enable={!inputIsEmpty} />
+					<Button text="GENERATE" delay={delay + 2.2} enable={!inputIsEmpty} />
 				</div>
 			</div>
 		</Container>
