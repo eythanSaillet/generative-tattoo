@@ -83,8 +83,9 @@ const Text = styled.div`
 
 const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAnim = true }, ref) => {
 	let spans = []
-	let spansRefs = useRef(new Array(text.length))
-	let isAnimated = useRef(true)
+	const spansRefs = useRef(new Array(text.length))
+	const isAnimated = useRef(true)
+	const removeAfterAnimate = useRef(false)
 
 	for (let i = 0; i < text.length; i++) {
 		spans.push(
@@ -116,6 +117,21 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAni
 		}
 	}, [stagger, delay, displayAnim])
 
+	// Remove animation
+	let remove = (delay) => {
+		if (!isAnimated.current) {
+			gsap.to(spansRefs.current, {
+				duration: 0.7,
+				y: '105%',
+				stagger: stagger,
+				ease: Power3.easeIn,
+				delay: delay,
+			})
+		} else {
+			removeAfterAnimate.current = true
+		}
+	}
+
 	// Hover animation
 	let hoverAnim = () => {
 		isAnimated.current = true
@@ -138,6 +154,9 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAni
 							})
 							if (i === spansRefs.current.length - 1) {
 								isAnimated.current = false
+								if (removeAfterAnimate.current) {
+									remove()
+								}
 							}
 						},
 					})
@@ -166,13 +185,7 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAni
 
 		// Unmount animation
 		remove(delay) {
-			gsap.to(spansRefs.current, {
-				duration: 0.7,
-				y: '105%',
-				stagger: stagger,
-				ease: Power3.easeIn,
-				delay: delay,
-			})
+			remove(delay)
 		},
 	}))
 

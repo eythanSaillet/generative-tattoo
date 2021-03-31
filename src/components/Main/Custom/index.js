@@ -239,6 +239,9 @@ export default function Custom({ navTitleRef, delay }) {
 								updateGenerateButton()
 							} else {
 								sketch.current.generate()
+								if (!buttonIsDisable) {
+									setButtonIsDisable(true)
+								}
 							}
 						}}
 					>
