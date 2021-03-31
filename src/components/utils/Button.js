@@ -15,8 +15,10 @@ const Container = styled.div`
 	cursor: pointer;
 	pointer-events: ${(props) => (props.enable ? 'auto' : 'none')};
 	&:hover {
-		background: var(--white);
-		color: var(--black);
+		background: ${(props) => (props.enable ? 'var(--white)' : 'var(--black)')};
+		color: ${(props) => (props.enable ? 'var(--black)' : 'var(--white)')};
+		/* background: var(--white); */
+		/* color: var(--black); */
 	}
 	&:active {
 		color: var(--white);
@@ -44,7 +46,8 @@ const Container = styled.div`
 	}
 `
 const Button = forwardRef(({ text, delay, enable }, ref) => {
-	let displayEffect = useRef(null)
+	const displayEffect = useRef(null)
+	const animatedText = useRef(null)
 
 	useEffect(() => {
 		gsap.to(displayEffect.current, { duration: 1, scaleX: 0, ease: Power1.easeInOut, delay: delay })
@@ -52,6 +55,10 @@ const Button = forwardRef(({ text, delay, enable }, ref) => {
 
 	useImperativeHandle(ref, () => ({
 		remove() {},
+
+		replaceText(text) {
+			animatedText.current.replace(text)
+		},
 	}))
 
 	return (
@@ -59,7 +66,7 @@ const Button = forwardRef(({ text, delay, enable }, ref) => {
 			<div className="displayEffectContainer">
 				<div className="displayEffect" ref={displayEffect} />
 			</div>
-			<AnimatedText text={text} type="button" stagger={0.05} delay={delay * 1000 + 250}></AnimatedText>
+			<AnimatedText text={text} type="button" stagger={0.05} delay={delay * 1000 + 250} ref={animatedText}></AnimatedText>
 		</Container>
 	)
 })

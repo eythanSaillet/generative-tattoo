@@ -61,7 +61,7 @@ const Container = styled.div`
 	}
 `
 
-export default function Trackbar({ text, varName, range, decimals, initialValue, delay, sketch }) {
+export default function Trackbar({ text, varName, range, decimals, initialValue, delay, sketch, setButtonIsDisable }) {
 	const [position, setPosition] = useState(0)
 	const [windowIsClicked, setWindowIsClicked] = useState(false)
 	const [valueState, setValueState] = useState(null)
@@ -92,6 +92,8 @@ export default function Trackbar({ text, varName, range, decimals, initialValue,
 
 		// Translate the tracker
 		setPosition(x)
+
+		setButtonIsDisable(false)
 	}
 
 	useEffect(() => {

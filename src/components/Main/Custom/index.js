@@ -123,8 +123,9 @@ export default function Custom({ navTitleRef, delay }) {
 	const customSentence = useRef(null)
 	const customSentenceContainer = useRef(null)
 	const trackbarsContainer = useRef(null)
+	const customButton = useRef(null)
 
-	const [inputIsEmpty, setInputIsEmpty] = useState(true)
+	const [buttonIsDisable, setButtonIsDisable] = useState(true)
 	const [isFirstTimeGenerated, setIsFirstTimeGenerated] = useState(false)
 
 	const history = useHistory()
@@ -141,11 +142,13 @@ export default function Custom({ navTitleRef, delay }) {
 	// Create trackbars
 	let trackbars = []
 	for (let i = 0; i < design.options.length; i++) {
-		trackbars.push(<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={0.5 + 0.2 * i} sketch={sketch} key={i} />)
+		trackbars.push(
+			<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={0.5 + 0.2 * i} sketch={sketch} key={i} setButtonIsDisable={setButtonIsDisable} />
+		)
 	}
 
 	function updateGenerateButton() {
-		keyInput.current.value.length > 0 ? setInputIsEmpty(false) : setInputIsEmpty(true)
+		keyInput.current.value.length > 0 ? setButtonIsDisable(false) : setButtonIsDisable(true)
 	}
 
 	function transitionToTrackbars() {
@@ -232,7 +235,11 @@ export default function Custom({ navTitleRef, delay }) {
 							// Update system
 							sketch.current.updateValue('noiseSeed', randomKeyCode)
 
-							updateGenerateButton()
+							if (!isFirstTimeGenerated) {
+								updateGenerateButton()
+							} else {
+								sketch.current.generate()
+							}
 						}}
 					>
 						<NewKeyButtonImage />
@@ -244,14 +251,19 @@ export default function Custom({ navTitleRef, delay }) {
 				<div
 					style={{ width: '80%' }}
 					onClick={() => {
-						if (!inputIsEmpty) {
+						if (!buttonIsDisable) {
 							sketch.current.generate()
 
-							transitionToTrackbars()
+							setButtonIsDisable(true)
+
+							if (!isFirstTimeGenerated) {
+								transitionToTrackbars()
+								customButton.current.replaceText('APPLY')
+							}
 						}
 					}}
 				>
-					<Button text="GENERATE" delay={delay + 2.2} enable={!inputIsEmpty} />
+					<Button text="GENERATE" delay={delay + 2.2} enable={!buttonIsDisable} ref={customButton} />
 				</div>
 			</div>
 		</Container>

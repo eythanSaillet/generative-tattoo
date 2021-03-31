@@ -147,8 +147,8 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAni
 		}
 	}
 
-	// Unmount animation
 	useImperativeHandle(ref, () => ({
+		// Replace text animation
 		replace(text) {
 			gsap.to(spansRefs.current, {
 				duration: 0.5,
@@ -164,6 +164,7 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAni
 			})
 		},
 
+		// Unmount animation
 		remove(delay) {
 			gsap.to(spansRefs.current, {
 				duration: 0.7,
