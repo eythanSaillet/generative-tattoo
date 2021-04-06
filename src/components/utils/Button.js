@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
-import gsap, { Power1 } from 'gsap'
+import gsap, { Power2 } from 'gsap'
 
 import AnimatedText from './AnimatedText'
 
@@ -50,11 +50,14 @@ const Button = forwardRef(({ text, delay, enable }, ref) => {
 	const animatedText = useRef(null)
 
 	useEffect(() => {
-		gsap.to(displayEffect.current, { duration: 1, scaleX: 0, ease: Power1.easeInOut, delay: delay })
+		gsap.to(displayEffect.current, { duration: 0.85, scaleX: 0, ease: Power2.easeInOut, delay: delay })
 	}, [delay])
 
 	useImperativeHandle(ref, () => ({
-		remove() {},
+		remove(delay) {
+			gsap.to(displayEffect.current, { duration: 0.85, scaleX: 1, ease: Power2.easeInOut, delay: delay + 0.3 })
+			animatedText.current.remove(delay)
+		},
 
 		replaceText(text) {
 			animatedText.current.replace(text)

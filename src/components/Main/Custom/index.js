@@ -159,8 +159,9 @@ export default function Custom({ navTitleRef, delay }) {
 	}
 
 	useEffect(() => {
-		gsap.to(line.current, { duration: 1.2, scaleY: 1, ease: Power1.easeOut, delay: delay + 1.2 })
-		gsap.to(keyInputMask.current, { duration: 1, scaleX: 0, ease: Power1.easeInOut, delay: delay + 1.7 })
+		const lineEase = delay === 0 ? Power2.easeOut : Power2.easeInOut
+		gsap.to(line.current, { duration: 1.2, scaleY: 1, ease: lineEase, delay: delay + 1.2 })
+		gsap.to(keyInputMask.current, { duration: 0.85, scaleX: 0, ease: Power2.easeInOut, delay: delay + 1.5 })
 	}, [delay])
 
 	return (
@@ -176,6 +177,8 @@ export default function Custom({ navTitleRef, delay }) {
 						returnButton.current.remove()
 						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: 0.3 })
 						customSentence.current.remove(0.25)
+						customButton.current.remove(0.1)
+						gsap.to(keyInputMask.current, { duration: 0.85, scaleX: 1, ease: Power2.easeInOut, delay: 0.7 })
 
 						// Go back to choose interface
 						setTimeout(() => {
@@ -183,7 +186,7 @@ export default function Custom({ navTitleRef, delay }) {
 						}, 2100)
 					}}
 				>
-					<AnimatedText text="RETURN" type="link" stagger={0.03} delay={delay * 1000 + 1200} hover={true} ref={returnButton} />
+					<AnimatedText text="RETURN" type="link" stagger={0.04} delay={delay * 1000 + 1200} hover={true} ref={returnButton} />
 				</div>
 				<Sketch delay={delay + 2} ref={sketch} />
 				<div className="designTitleContainer">
@@ -266,7 +269,7 @@ export default function Custom({ navTitleRef, delay }) {
 						}
 					}}
 				>
-					<Button text="GENERATE" delay={delay + 2.2} enable={!buttonIsDisable} ref={customButton} />
+					<Button text="GENERATE" delay={delay + 2} enable={!buttonIsDisable} ref={customButton} />
 				</div>
 			</div>
 		</Container>
