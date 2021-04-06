@@ -28,6 +28,7 @@ let disturbedLinesSystem = {
 
 	// NOISE PROPERTIES
 	noiseSeed: '',
+	previousSeed: '',
 	noiseScale: 0.008,
 	noiseFactor: 0,
 
@@ -48,6 +49,10 @@ let disturbedLinesSystem = {
 			this.origin = { x: 10, y: -2 }
 			this.noiseFactor = 0
 			p5.background(0)
+
+			// SET GENERATION INTERVAL
+			this.timeInterval = this.previousSeed === this.noiseSeed ? 0 : 50
+			this.previousSeed = this.noiseSeed
 
 			// RESET REVERSE VALUE
 			this.lines = []
