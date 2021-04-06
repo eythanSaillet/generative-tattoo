@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 
@@ -60,8 +60,7 @@ const Container = styled.div`
 		}
 	}
 `
-
-export default function Trackbar({ text, varName, range, decimals, initialValue, delay, sketch, setButtonIsDisable }) {
+const Trackbar = forwardRef(({ text, varName, range, decimals, initialValue, delay, sketch, setButtonIsDisable }, ref) => {
 	const [position, setPosition] = useState(0)
 	const [windowIsClicked, setWindowIsClicked] = useState(false)
 	const [valueState, setValueState] = useState(null)
@@ -70,6 +69,7 @@ export default function Trackbar({ text, varName, range, decimals, initialValue,
 	const tracker = useRef(null)
 	const trackerIndex = useRef(null)
 	const bar = useRef(null)
+	const animatedText = useRef(null)
 
 	window.addEventListener('mouseup', () => {
 		setWindowIsClicked(false)
@@ -121,6 +121,17 @@ export default function Trackbar({ text, varName, range, decimals, initialValue,
 		})
 	}, [range, initialValue, delay, decimals])
 
+	useImperativeHandle(ref, () => ({
+		remove(delay) {
+			animatedText.current.remove(delay - 0.3)
+
+			gsap.to(bar.current, { duration: 1, scaleX: 0, delay: delay })
+			gsap.to(tracker.current, { duration: 1, left: 0, delay: delay, ease: Power2.easeInOut })
+
+			gsap.to(tracker.current, { duration: 0.5, opacity: 0, delay: delay, ease: Power2.easeIn })
+		},
+	}))
+
 	return (
 		<Container
 			onMouseMove={(e) => {
@@ -130,7 +141,7 @@ export default function Trackbar({ text, varName, range, decimals, initialValue,
 			}}
 		>
 			<div className="secondContainer">
-				<AnimatedText text={text} type="trackbarText" stagger={0.03} delay={delay * 1000} hover={false}></AnimatedText>
+				<AnimatedText text={text} type="trackbarText" stagger={0.03} delay={delay * 1000} hover={false} ref={animatedText}></AnimatedText>
 				<div
 					className="barContainerOut"
 					onMouseDown={(e) => {
@@ -160,4 +171,5 @@ export default function Trackbar({ text, varName, range, decimals, initialValue,
 			</div>
 		</Container>
 	)
-}
+})
+export default Trackbar

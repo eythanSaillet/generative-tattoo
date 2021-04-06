@@ -123,6 +123,7 @@ export default function Custom({ navTitleRef, delay }) {
 	const customSentence = useRef(null)
 	const customSentenceContainer = useRef(null)
 	const trackbarsContainer = useRef(null)
+	const trackbarsRefs = useRef([])
 	const customButton = useRef(null)
 
 	const [buttonIsDisable, setButtonIsDisable] = useState(true)
@@ -143,7 +144,18 @@ export default function Custom({ navTitleRef, delay }) {
 	let trackbars = []
 	for (let i = 0; i < design.options.length; i++) {
 		trackbars.push(
-			<Trackbar text={design.options[i].name} varName={design.options[i].varName} range={design.options[i].range} decimals={design.options[i].decimals} initialValue={design.options[i].initialValue} delay={0.5 + 0.2 * i} sketch={sketch} key={i} setButtonIsDisable={setButtonIsDisable} />
+			<Trackbar
+				text={design.options[i].name}
+				varName={design.options[i].varName}
+				range={design.options[i].range}
+				decimals={design.options[i].decimals}
+				initialValue={design.options[i].initialValue}
+				delay={0.5 + 0.25 * i}
+				sketch={sketch}
+				key={i}
+				setButtonIsDisable={setButtonIsDisable}
+				ref={(element) => trackbarsRefs.current.push(element)}
+			/>
 		)
 	}
 
@@ -178,12 +190,18 @@ export default function Custom({ navTitleRef, delay }) {
 						gsap.to(line.current, { duration: 0.7, scaleY: 0, ease: Power1.easeOut, delay: 0.3 })
 						customSentence.current.remove(0.25)
 						customButton.current.remove(0.1)
-						gsap.to(keyInputMask.current, { duration: 0.85, scaleX: 1, ease: Power2.easeInOut, delay: 0.7 })
+						gsap.to(keyInputMask.current, { duration: 0.85, scaleX: 1, ease: Power2.easeInOut, delay: 0.75 })
+						let index = 0
+						for (let i = trackbarsRefs.current.length - 1; i >= 0; i--) {
+							trackbarsRefs.current[i].remove(index * 0.25 + 0.5)
+							index++
+						}
 
 						// Go back to choose interface
+						const goBackDelay = isFirstTimeGenerated === true ? 2600 : 1800
 						setTimeout(() => {
 							history.goBack()
-						}, 2100)
+						}, goBackDelay)
 					}}
 				>
 					<AnimatedText text="RETURN" type="link" stagger={0.04} delay={delay * 1000 + 1200} hover={true} ref={returnButton} />
