@@ -18,6 +18,7 @@ body {
 	background: var(--black);
 	font-family: 'Made Outer Sans Regular';
 	color: var(--white);
+	overscroll-behavior: none;
 }
 
 @font-face {

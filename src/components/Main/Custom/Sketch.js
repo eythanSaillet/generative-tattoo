@@ -17,12 +17,13 @@ const Container = styled.div`
 const P5Sketch = forwardRef(({ delay }, ref) => {
 	const system = useRef(null)
 	const p5Ref = useRef(null)
+	const canvas = useRef()
 
 	const setup = (p5, canvasParentRef) => {
 		system.current = require('./sketchSystems/disturbedLinesSystem').default
 
 		p5Ref.current = p5
-		p5.createCanvas(system.current.canvasWidth, system.current.canvasHeight).parent(canvasParentRef)
+		canvas.current = p5.createCanvas(system.current.canvasWidth, system.current.canvasHeight).parent(canvasParentRef)
 
 		setTimeout(() => {
 			system.current.init(p5)

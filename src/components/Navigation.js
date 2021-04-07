@@ -14,6 +14,7 @@ const View = styled.div`
 	justify-content: flex-end;
 	align-items: flex-end;
 	background: var(--black);
+	/* position: fixed; */
 	.container {
 		position: relative;
 		width: calc(100% - var(--containerMargin));
@@ -180,6 +181,9 @@ export default function Navigation() {
 					</div>
 					<div className="titleContainer">
 						<Switch>
+							<Route path="/select">
+								<AnimatedText text="SELECT" type="navTitle" stagger={0.03} delay={600} hover={false} ref={navTitle}></AnimatedText>
+							</Route>
 							<Route path="/choose/:design">
 								<AnimatedText text="CUSTOM" type="navTitle" stagger={0.03} delay={600} hover={false} ref={navTitle}></AnimatedText>
 							</Route>

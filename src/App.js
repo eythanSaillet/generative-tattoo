@@ -9,7 +9,7 @@ function App() {
 		<Router>
 			<LastLocationProvider>
 				<Switch>
-					<Route path="/choose">
+					<Route path={['/choose', '/select']}>
 						<Navigation></Navigation>
 					</Route>
 					<Route path="/">
