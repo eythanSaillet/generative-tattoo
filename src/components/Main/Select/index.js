@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 
 import SelectItem from './SelectItem'
+// import ImageSources from '../../../assets/base64.json'
 
 const Container = styled.div`
 	width: 100%;
@@ -20,6 +21,18 @@ const Container = styled.div`
 			flex-wrap: wrap;
 			align-content: flex-start;
 			pointer-events: none;
+			div {
+				border-bottom: var(--white) 1px solid;
+				&:nth-child(2n - 1) {
+					border-right: var(--white) 1px solid;
+				}
+				&:nth-last-child(1) {
+					border-bottom: none;
+				}
+				&:nth-last-child(2):nth-child(odd) {
+					border-bottom: none;
+				}
+			}
 		}
 		.scrollerContainer {
 			height: 100%;
@@ -56,6 +69,18 @@ export default function Select() {
 		scroller.current.style.height = height + 'px'
 	}
 
+	// Get local storage data
+	// let input = [ImageSources.a, ImageSources.b, ImageSources.c]
+	// localStorage.setItem('Designs', JSON.stringify(input))
+	const designs = JSON.parse(localStorage.getItem('Designs'))
+	console.log(designs)
+
+	// Create selected items
+	let selectedItems = []
+	for (const _key in designs) {
+		selectedItems.push(<SelectItem imageSource={designs[_key]} key={_key} />)
+	}
+
 	useEffect(() => {
 		setScrollerHeight(itemContainer.current.offsetHeight)
 
@@ -71,18 +96,7 @@ export default function Select() {
 		<Container>
 			<div className="leftContainer">
 				<div className="itemContainer" ref={itemContainer}>
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
-					<SelectItem />
+					{selectedItems}
 				</div>
 				<div
 					className="scrollerContainer"
