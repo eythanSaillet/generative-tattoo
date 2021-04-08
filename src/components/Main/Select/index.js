@@ -20,7 +20,6 @@ const Container = styled.div`
 			display: flex;
 			flex-wrap: wrap;
 			align-content: flex-start;
-			pointer-events: none;
 			div {
 				border-bottom: var(--white) 1px solid;
 				&:nth-child(2n - 1) {
@@ -32,14 +31,6 @@ const Container = styled.div`
 				&:nth-last-child(2):nth-child(odd) {
 					border-bottom: none;
 				}
-			}
-		}
-		.scrollerContainer {
-			height: 100%;
-			overflow: scroll;
-			.scroller {
-				width: 100%;
-				height: 300%;
 			}
 		}
 	}
@@ -55,25 +46,28 @@ const Container = styled.div`
 `
 
 export default function Select() {
+	const leftContainer = useRef(null)
 	const itemContainer = useRef(null)
-	const scroller = useRef(null)
+	const scrollDelta = useRef(null)
 	const scrollValue = useRef(0)
 	const smoothScrollValue = useRef(0)
+	let resizeListener
 
 	// Lerp function
 	function lerp(start, end, amt) {
 		return (1 - amt) * start + amt * end
 	}
+
 	// Set scroller height
-	function setScrollerHeight(height) {
-		scroller.current.style.height = height + 'px'
+	function setScrollDelta() {
+		scrollDelta.current = itemContainer.current.offsetHeight - leftContainer.current.offsetHeight
 	}
 
 	// Get local storage data
 	// let input = [ImageSources.a, ImageSources.b, ImageSources.c]
 	// localStorage.setItem('Designs', JSON.stringify(input))
 	const designs = JSON.parse(localStorage.getItem('Designs'))
-	console.log(designs)
+	// console.log(designs)
 
 	// Create selected items
 	let selectedItems = []
@@ -82,29 +76,43 @@ export default function Select() {
 	}
 
 	useEffect(() => {
-		setScrollerHeight(itemContainer.current.offsetHeight)
+		setScrollDelta()
 
 		// Set lerp interval
 		const interval = setInterval(() => {
 			smoothScrollValue.current = lerp(smoothScrollValue.current, scrollValue.current, 0.2)
 			itemContainer.current.style.transform = `translateY(${-smoothScrollValue.current}px)`
 		}, 20)
-		return () => clearInterval(interval)
-	}, [])
+
+		// Resize listener
+		let resizeListener = () => {
+			setScrollDelta()
+		}
+		window.addEventListener('resize', resizeListener)
+
+		return () => {
+			clearInterval(interval)
+			window.removeEventListener('resize', resizeListener)
+		}
+	}, [resizeListener])
 
 	return (
 		<Container>
-			<div className="leftContainer">
-				<div className="itemContainer" ref={itemContainer}>
-					{selectedItems}
-				</div>
+			<div className="leftContainer" ref={leftContainer}>
 				<div
-					className="scrollerContainer"
-					onScroll={(e) => {
-						scrollValue.current = e.target.scrollTop
+					className="itemContainer"
+					ref={itemContainer}
+					onWheel={(e) => {
+						if (scrollValue.current + e.deltaY <= 0) {
+							scrollValue.current = 0
+						} else if (scrollValue.current + e.deltaY >= scrollDelta.current) {
+							scrollValue.current = scrollDelta.current
+						} else {
+							scrollValue.current += e.deltaY
+						}
 					}}
 				>
-					<div className="scroller" ref={scroller}></div>
+					{selectedItems}
 				</div>
 			</div>
 			<div className="line" />
