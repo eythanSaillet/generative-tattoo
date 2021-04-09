@@ -13,8 +13,6 @@ const Container = styled.div`
 `
 
 export default function Main({ navTitleRef }) {
-	let match = useRouteMatch()
-
 	const lastLocation = useLastLocation()
 
 	return (

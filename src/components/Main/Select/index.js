@@ -20,9 +20,9 @@ const Container = styled.div`
 			display: flex;
 			flex-wrap: wrap;
 			align-content: flex-start;
-			div {
+			> div {
 				border-bottom: var(--white) 1px solid;
-				&:nth-child(2n - 1) {
+				&:nth-child(odd) {
 					border-right: var(--white) 1px solid;
 				}
 				&:nth-last-child(1) {
