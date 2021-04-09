@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRouteMatch, Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { useLastLocation } from 'react-router-last-location'
 
 import DesignList from './DesignList/index'
