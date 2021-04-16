@@ -30,6 +30,11 @@ const Container = styled.div`
 			bottom: 54px;
 			left: 60px;
 		}
+		.selectButtonContainer {
+			position: absolute;
+			bottom: 54px;
+			right: 60px;
+		}
 	}
 	.line {
 		width: var(--menuLineSize);
@@ -128,6 +133,7 @@ export default function Custom({ navTitleRef, delay }) {
 
 	const [buttonIsDisable, setButtonIsDisable] = useState(true)
 	const [isFirstTimeGenerated, setIsFirstTimeGenerated] = useState(false)
+	const [canSelect, setCanSelect] = useState(false)
 
 	const history = useHistory()
 
@@ -210,6 +216,19 @@ export default function Custom({ navTitleRef, delay }) {
 				<div className="designTitleContainer">
 					<DesignTitle index={design.index} text={design.title} displayAnim={delay === 0 ? true : false} delay={delay === 0 ? -1 : 0} />
 				</div>
+				<div
+					className="selectButtonContainer"
+					onClick={() => {
+						if (canSelect) {
+							console.log('select')
+							sketch.current.saveToLocalStorage()
+
+							setCanSelect(false)
+						}
+					}}
+				>
+					<Button text="ADD TO SELECTION" enable={canSelect} delay={delay + 2} />
+				</div>
 			</div>
 			<div className="line" ref={line}></div>
 			<div className="rightContainer">
@@ -263,6 +282,8 @@ export default function Custom({ navTitleRef, delay }) {
 								if (!buttonIsDisable) {
 									setButtonIsDisable(true)
 								}
+
+								setCanSelect(true)
 							}
 						}}
 					>
@@ -284,6 +305,8 @@ export default function Custom({ navTitleRef, delay }) {
 								transitionToTrackbars()
 								customButton.current.replaceText('APPLY')
 							}
+
+							setCanSelect(true)
 						}
 					}}
 				>

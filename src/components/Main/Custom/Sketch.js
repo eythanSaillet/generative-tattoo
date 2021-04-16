@@ -40,6 +40,13 @@ const P5Sketch = forwardRef(({ delay }, ref) => {
 		updateValue(varName, value) {
 			system.current.updateValue(varName, value)
 		},
+
+		saveToLocalStorage() {
+			let designs = JSON.parse(localStorage.getItem('Designs'))
+			designs = designs === null ? [] : designs
+			designs.push(canvas.current.canvas.toDataURL())
+			localStorage.setItem('Designs', JSON.stringify(designs))
+		},
 	}))
 
 	return (
