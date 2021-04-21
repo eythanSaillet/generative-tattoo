@@ -81,7 +81,9 @@ export default function Select() {
 		// Set lerp interval
 		const interval = setInterval(() => {
 			smoothScrollValue.current = lerp(smoothScrollValue.current, scrollValue.current, 0.2)
-			itemContainer.current.style.transform = `translateY(${-smoothScrollValue.current}px)`
+			if (itemContainer.current !== null) {
+				itemContainer.current.style.transform = `translateY(${-smoothScrollValue.current}px)`
+			}
 		}, 20)
 
 		// Resize listener

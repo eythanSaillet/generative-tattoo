@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import gsap, { Power2 } from 'gsap'
 import { Route, Switch } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import Main from './Main'
 import AnimatedText from './utils/AnimatedText'
+import SelectNavButton from './SelectNavButton'
 import AnimatedLogoSource from '../assets/animatedLogo.webm'
 
 const View = styled.div`
@@ -91,6 +93,7 @@ const View = styled.div`
 				}
 			}
 			.selectionButtonContainer {
+				position: relative;
 				width: 20%;
 				height: 100%;
 			}
@@ -116,8 +119,21 @@ const View = styled.div`
 				}
 			}
 			.main {
+				position: relative;
 				width: calc(100% - var(--menuSize));
 				height: 100%;
+				overflow: hidden;
+				.selectionTransitionOverlay {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: calc(100% + var(--menuLineSize));
+					background: var(--black);
+					z-index: 10;
+					border-bottom: 1px solid var(--white);
+					transform: translateY(-100%);
+				}
 			}
 		}
 	}
@@ -125,15 +141,22 @@ const View = styled.div`
 
 export default function Navigation() {
 	// Nav lines refs
-	let topNavLine1 = useRef(null)
-	let topNavLine2 = useRef(null)
-	let leftNavLine1 = useRef(null)
-	let leftNavLine2 = useRef(null)
+	const topNavLine1 = useRef(null)
+	const topNavLine2 = useRef(null)
+	const leftNavLine1 = useRef(null)
+	const leftNavLine2 = useRef(null)
 	// Logo refs
-	let logo = useRef(null)
-	let animatedLogo = useRef(null)
+	const logo = useRef(null)
+	const animatedLogo = useRef(null)
 	// Nav title ref
-	let navTitle = useRef(null)
+	const navTitle = useRef(null)
+
+	const selectionTransitionOverlay = useRef(null)
+	const selectionIsTransitioning = useRef(false)
+
+	const [isInSelection, setIsInSelection] = useState(false)
+
+	let history = useHistory()
 
 	useEffect(() => {
 		// Play logo animation
@@ -146,6 +169,10 @@ export default function Navigation() {
 		gsap.to(topNavLine2.current, { duration: 1.8, scaleX: 1, ease: Power2.easeInOut })
 		gsap.to(leftNavLine1.current, { duration: 1.1, scaleY: 1, ease: Power2.easeInOut })
 		gsap.to(leftNavLine2.current, { duration: 1.6, scaleY: 1, ease: Power2.easeInOut })
+		// Set isInSelection state from path
+		if (window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1) === 'select') {
+			setIsInSelection(true)
+		}
 	}, [])
 
 	return (
@@ -193,7 +220,49 @@ export default function Navigation() {
 						</Switch>
 						<AnimatedText text=" YOUR DESIGN" type="navTitle" stagger={0.03} delay={830} hover={false}></AnimatedText>
 					</div>
-					<div className="selectionButtonContainer"></div>
+					<div
+						className="selectionButtonContainer"
+						onClick={() => {
+							if (!selectionIsTransitioning.current) {
+								selectionIsTransitioning.current = true
+								if (!isInSelection) {
+									navTitle.current.replace('SELECT')
+									gsap.fromTo(
+										selectionTransitionOverlay.current,
+										{ translateY: '-100%' },
+										{
+											duration: 1.5,
+											translateY: '0%',
+											ease: Power2.easeInOut,
+											onComplete: () => {
+												history.push('/select')
+												selectionIsTransitioning.current = false
+												selectionTransitionOverlay.current.style.transform = 'translateY(-100%)'
+											},
+										}
+									)
+								} else {
+									navTitle.current.replace('CHOOSE')
+									history.push('/choose')
+									gsap.fromTo(
+										selectionTransitionOverlay.current,
+										{ translateY: '0%' },
+										{
+											duration: 1.5,
+											translateY: '-100%',
+											ease: Power2.easeInOut,
+											onComplete: () => {
+												selectionIsTransitioning.current = false
+											},
+										}
+									)
+								}
+								setIsInSelection(!isInSelection)
+							}
+						}}
+					>
+						<SelectNavButton isInSelection={isInSelection} />
+					</div>
 				</div>
 				<div className="lowerContainer">
 					<div className="leftNav">
@@ -203,6 +272,7 @@ export default function Navigation() {
 						</div>
 					</div>
 					<div className="main">
+						<div className="selectionTransitionOverlay" ref={selectionTransitionOverlay} />
 						<Main navTitleRef={navTitle}></Main>
 					</div>
 				</div>

@@ -42,7 +42,9 @@ const Demo = forwardRef(({ index, delay }, ref) => {
 
 	useEffect(() => {
 		setTimeout(() => {
-			videoIn.current.play()
+			if (videoIn.current != null) {
+				videoIn.current.play()
+			}
 		}, 750 * index + 1000 + delay)
 	}, [index, delay])
 

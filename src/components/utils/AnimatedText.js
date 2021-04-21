@@ -104,15 +104,17 @@ const AnimatedText = forwardRef(({ text, type, stagger, delay, hover, displayAni
 			isAnimated.current = false
 		} else {
 			setTimeout(() => {
-				gsap.to(spansRefs.current, {
-					duration: 0.7,
-					y: '0%',
-					stagger: stagger,
-					ease: Power3.easeOut,
-					onComplete: () => {
-						isAnimated.current = false
-					},
-				})
+				if (spansRefs.current[0] !== null) {
+					gsap.to(spansRefs.current, {
+						duration: 0.7,
+						y: '0%',
+						stagger: stagger,
+						ease: Power3.easeOut,
+						onComplete: () => {
+							isAnimated.current = false
+						},
+					})
+				}
 			}, delay)
 		}
 	}, [stagger, delay, displayAnim])
